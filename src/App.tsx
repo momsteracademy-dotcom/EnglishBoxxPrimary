@@ -8,6 +8,7 @@ import AdminPanel from "./components/AdminPanel";
 import ExamGenerator from "./components/ExamGenerator";
 import SubscriptionModal from "./components/SubscriptionModal";
 import TeacherBrandingModal from "./components/TeacherBrandingModal";
+import SystemStatusModal from "./components/SystemStatusModal";
 import { 
   Sparkles, 
   BookOpen, 
@@ -35,7 +36,8 @@ import {
   X,
   Check,
   FolderOpen,
-  Tag
+  Tag,
+  Database
 } from "lucide-react";
 
 const INITIAL_SAMPLE_WORKSHEET: Worksheet = {
@@ -103,6 +105,7 @@ export default function App() {
 
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   const [isTeacherBrandingModalOpen, setIsTeacherBrandingModalOpen] = useState(false);
+  const [isSystemStatusOpen, setIsSystemStatusOpen] = useState(false);
   const [teacherProfile, setTeacherProfile] = useState<TeacherProfile | null>(null);
 
   const fetchTeacherProfile = async (email: string) => {
@@ -813,10 +816,19 @@ export default function App() {
             <BookOpen className="w-3.5 h-3.5 mr-1" /> Syllabus Rules
           </button>
           
+          <button
+            onClick={() => setIsSystemStatusOpen(true)}
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-white/90 hover:bg-white border border-[#B8CC9A] hover:border-emerald-500 px-2.5 py-1.5 rounded-lg transition shadow-2xs cursor-pointer"
+            title="System Status & Database Inspector"
+          >
+            <Database className="w-3.5 h-3.5 text-emerald-600" />
+            <span>System Status</span>
+          </button>
+
           {isSupabaseConfigured ? (
             <span className="flex items-center gap-1.5 text-[#2E7D6F] text-xs md:text-sm font-bold bg-[#E2F5E9] px-3 py-1.5 rounded-full border border-[#8EE4AF]">
               <span className="w-2 h-2 rounded-full bg-[#379683] animate-pulse"></span>
-              <span>Firebase Cloud</span>
+              <span>Supabase Cloud</span>
             </span>
           ) : (
             <span className="flex items-center gap-1.5 text-[#2E7D6F] text-xs md:text-sm font-bold bg-[#E2F5E9] px-3 py-1.5 rounded-full border border-[#8EE4AF]">
@@ -1625,6 +1637,11 @@ export default function App() {
         initialProfile={teacherProfile}
         onSaveProfile={handleSaveTeacherProfile}
         onOpenSubscriptionModal={() => setIsSubscriptionModalOpen(true)}
+      />
+
+      <SystemStatusModal
+        isOpen={isSystemStatusOpen}
+        onClose={() => setIsSystemStatusOpen(false)}
       />
 
       {/* Subtle bottom informational footer (No-Print) */}

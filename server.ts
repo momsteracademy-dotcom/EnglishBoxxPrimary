@@ -43,10 +43,58 @@ import {
 
 dotenv.config();
 
-// Supabase integration disabled per user request
+// Supabase integration enabled for Question Bank & database operations
 let supabaseClient: any = null;
 function isSupabaseConfigured() {
-  return false;
+  return Boolean(process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY));
+}
+
+function mapSupabaseQuestionItem(d: any) {
+  if (!d) return null;
+  return {
+    id: String(d.id),
+    app_id: d.app_id || "englishboxx",
+    subject: d.subject || "English",
+    grade: d.grade || "ป.3",
+    cefr_level: d.cefr_level || d.cefrLevel || "A1",
+    cefrLevel: d.cefr_level || d.cefrLevel || "A1",
+    topic: d.topic || "General English",
+    grammar_focus: d.grammar_focus || d.grammarFocus || d.skill || "",
+    grammarFocus: d.grammar_focus || d.grammarFocus || d.skill || "",
+    vocabulary_focus: d.vocabulary_focus || d.vocabularyFocus || "",
+    vocabularyFocus: d.vocabulary_focus || d.vocabularyFocus || "",
+    learning_stage: d.learning_stage || d.learningStage || "",
+    learningStage: d.learning_stage || d.learningStage || "",
+    focus: d.focus || d.skill || "",
+    skill: d.skill || d.grammar_focus || d.focus || d.learning_stage || "",
+    question_type: d.question_type || d.format || d.questionType || "multiple-choice",
+    questionType: d.question_type || d.format || d.questionType || "multiple-choice",
+    format: d.question_type || d.format || d.questionType || "multiple-choice",
+    difficulty: d.difficulty || "Medium",
+    learning_objective: d.learning_objective || d.learningObjective || "",
+    learningObjective: d.learning_objective || d.learningObjective || "",
+    source_id: d.source_id || "",
+    source_category: d.source_category || "",
+    ai_generated: d.ai_generated || "Yes",
+    generation_method: d.generation_method || "AI Engine",
+    question_text: d.question_text || d.questionText || "",
+    questionText: d.question_text || d.questionText || "",
+    options: Array.isArray(d.options) ? d.options : (typeof d.options === "string" ? JSON.parse(d.options || "[]") : []),
+    correct_answer: d.correct_answer || d.correctAnswer || "",
+    correctAnswer: d.correct_answer || d.correctAnswer || "",
+    explanation: d.explanation || "",
+    status: d.status || "pending",
+    requires_image: Boolean(d.requires_image || d.requiresImage),
+    image_url: d.image_url || d.imageUrl || "",
+    reviewed_at: d.reviewed_at || "",
+    reviewed_by: d.reviewed_by || "",
+    reject_reason: d.reject_reason || "",
+    tags: Array.isArray(d.tags) ? d.tags : [],
+    created_at: d.created_at || d.createdAt || new Date().toISOString(),
+    createdAt: d.created_at || d.createdAt || new Date().toISOString(),
+    created_by: d.created_by || d.createdBy || "sakarinmam999@gmail.com",
+    createdBy: d.created_by || d.createdBy || "sakarinmam999@gmail.com"
+  };
 }
 
 // ==========================================
@@ -169,6 +217,49 @@ function getSupabaseService() {
   
   supabaseService = createClient(cleanUrl, serviceKey.trim());
   return supabaseService;
+}
+
+// ==========================================
+// DEVELOPER DATABASE ACTIVITY LOGGING & SYSTEM STATUS
+// ==========================================
+export interface DbActivityLog {
+  id: string;
+  operation: "SELECT" | "INSERT" | "UPDATE" | "DELETE" | "UPSERT";
+  table: string;
+  database: "Supabase" | "Firestore" | "Local JSON";
+  timestamp: string;
+  app_id: string;
+  success: boolean;
+  error?: string;
+  details?: string;
+}
+
+const dbActivityLogs: DbActivityLog[] = [];
+
+export function recordDbActivity(
+  operation: "SELECT" | "INSERT" | "UPDATE" | "DELETE" | "UPSERT",
+  table: string,
+  database: "Supabase" | "Firestore" | "Local JSON",
+  success: boolean,
+  error?: string,
+  details?: string,
+  appId: string = "englishboxx"
+) {
+  const logItem: DbActivityLog = {
+    id: `log_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    operation,
+    table,
+    database,
+    timestamp: new Date().toISOString(),
+    app_id: appId,
+    success,
+    error: error ? String(error).substring(0, 300) : undefined,
+    details
+  };
+  dbActivityLogs.unshift(logItem);
+  if (dbActivityLogs.length > 100) {
+    dbActivityLogs.pop();
+  }
 }
 
 async function startServer() {
@@ -699,24 +790,39 @@ async function startServer() {
         role = "admin";
       }
 
-      // 1. Fetch Question Bank from Firebase AND Local
+      // 1. Fetch Question Bank from Supabase (Primary) where app_id = 'englishboxx' AND status = 'approved'
       let bank: any[] = [];
-      if (isFirebaseConfigured()) {
+      if (isSupabaseConfigured()) {
         try {
-          const fbBank = await getFirebaseQuestionBank();
-          if (fbBank && Array.isArray(fbBank)) {
-            bank = fbBank;
+          const supabase = getSupabaseService();
+          const { data, error } = await supabase
+            .from("question_bank")
+            .select("*")
+            .eq("app_id", "englishboxx")
+            .eq("status", "approved");
+
+          if (!error && data && data.length > 0) {
+            bank = data.map(mapSupabaseQuestionItem);
           }
         } catch (e) {
-          console.error("Firebase read error in generate-worksheet, fallback to local:", e);
+          console.error("Supabase read error in generate-worksheet, falling back to local/Firebase:", e);
         }
       }
-      const localBank = readQuestionBank();
-      const bankIds = new Set(bank.map(q => String(q.id)));
-      for (const q of localBank) {
-        if (!bankIds.has(String(q.id))) {
-          bank.push(q);
+
+      // Temporary Read Fallback if Supabase returns no questions or error
+      if (bank.length === 0) {
+        let localItems = readQuestionBank();
+        if (isFirebaseConfigured()) {
+          try {
+            const fbBank = await getFirebaseQuestionBank();
+            if (fbBank && Array.isArray(fbBank) && fbBank.length > 0) {
+              localItems = fbBank;
+            }
+          } catch (e) {
+            console.error("Firebase read fallback error in generate-worksheet:", e);
+          }
         }
+        bank = localItems.filter((q: any) => (q.status || "approved") === "approved").map(mapSupabaseQuestionItem);
       }
 
       // Helper function to normalize strings for comparison
@@ -1033,55 +1139,50 @@ async function startServer() {
         currentRepo.push(newRepoItem);
         writeRepository(currentRepo);
 
-        // Also save to local question bank with clean structure (excluding duplicates)
+        // Save auto-generated questions to Supabase question_bank (app_id = 'englishboxx', status = 'pending')
         if (Array.isArray(parsed.questions)) {
-          const currentQb = readQuestionBank();
           const qbItems = parsed.questions.map((q: any, idx: number) => ({
             id: `qb_${Date.now()}_${idx}`,
+            app_id: "englishboxx",
             subject: "English",
             grade,
             cefr_level: grade === "ป.1" || grade === "ป.2" ? "Pre-A1" : "A1",
             topic,
+            grammar_focus: focus || "",
+            vocabulary_focus: "",
             learning_stage: learningStage || "Vocabulary & Meaning",
             focus: focus || "",
             question_type: q.questionType || exerciseStyle || "multiple-choice",
             difficulty: "Medium",
-            question_text: q.questionText || "",
+            question_text: q.questionText || q.question_text || "",
             options: q.options || [],
-            correct_answer: q.correctAnswer || "",
+            correct_answer: q.correctAnswer || q.correct_answer || "",
             explanation: q.explanation || "",
-            matching_left: q.matchingLeft || "",
-            matching_right: q.matchingRight || "",
-            visual_required: false,
-            visual_type: "none",
-            visual_prompt: "",
-            visual_url: "",
-            visual: { required: false, type: "none" },
+            status: "pending",
+            requires_image: false,
+            image_url: "",
             created_at: new Date().toISOString(),
             created_by: email || "system"
           }));
 
-          const uniqueQbItems: any[] = [];
-          for (const item of qbItems) {
-            if (!isDuplicateQuestion(item, [...currentQb, ...uniqueQbItems]).isDuplicate) {
-              uniqueQbItems.push(item);
+          if (isSupabaseConfigured()) {
+            try {
+              const supabase = getSupabaseService();
+              await supabase.from("question_bank").upsert(qbItems, { onConflict: "id" });
+            } catch (supaErr) {
+              console.error("Failed to save generated questions to Supabase:", supaErr);
             }
-          }
-
-          if (uniqueQbItems.length > 0) {
-            currentQb.push(...uniqueQbItems);
-            writeQuestionBank(currentQb);
-
-            if (isFirebaseConfigured()) {
-              saveMultipleFirebaseQuestionBankItems(uniqueQbItems);
-              saveFirebaseWorksheet({
-                id: newRepoItem.id,
-                created_at: newRepoItem.createdAt,
-                grade,
-                topic,
-                exercise_style: exerciseStyle,
-                data: parsed
-              });
+          } else {
+            const currentQb = readQuestionBank();
+            const uniqueQbItems: any[] = [];
+            for (const item of qbItems) {
+              if (!isDuplicateQuestion(item, [...currentQb, ...uniqueQbItems]).isDuplicate) {
+                uniqueQbItems.push(item);
+              }
+            }
+            if (uniqueQbItems.length > 0) {
+              currentQb.push(...uniqueQbItems as any);
+              writeQuestionBank(currentQb);
             }
           }
         }
@@ -1266,13 +1367,78 @@ async function startServer() {
     }
   });
 
+  // Developer System Status & Health Check Route
+  app.get("/api/system-status", async (req, res) => {
+    let supabaseConnected = false;
+    let supabaseError = null;
+
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getSupabaseService();
+        const { error } = await supabase
+          .from("question_bank")
+          .select("id")
+          .eq("app_id", "englishboxx")
+          .limit(1);
+
+        if (!error) {
+          supabaseConnected = true;
+          recordDbActivity("SELECT", "public.question_bank", "Supabase", true, undefined, "System Status Health Ping");
+        } else {
+          supabaseError = error.message;
+          recordDbActivity("SELECT", "public.question_bank", "Supabase", false, error.message, "System Status Health Ping");
+        }
+      } catch (e: any) {
+        supabaseError = e.message;
+        recordDbActivity("SELECT", "public.question_bank", "Supabase", false, e.message, "System Status Health Ping");
+      }
+    }
+
+    res.json({
+      database: {
+        primary: "Supabase",
+        supabaseConnection: supabaseConnected ? "Connected" : "Disconnected",
+        supabaseError: supabaseError,
+        currentAppId: "englishboxx"
+      },
+      questionBank: {
+        dataSource: supabaseConnected ? "Supabase" : "Fallback (Local/Firestore)",
+        table: "public.question_bank",
+        statusFilter: "approved / pending"
+      },
+      worksheets: {
+        dataSource: supabaseConnected ? "Supabase" : "Fallback (Local/Firestore)",
+        table: "public.worksheets"
+      },
+      fallback: {
+        firestore: isFirebaseConfigured() ? "Available" : "Not Configured",
+        localJson: "Available"
+      },
+      authentication: {
+        status: "Configured",
+        provider: "Custom Session / Supabase Auth"
+      },
+      ai: {
+        geminiApi: process.env.GEMINI_API_KEY ? "Configured" : "Not Configured"
+      },
+      imageGeneration: {
+        status: "Not Configured"
+      },
+      environment: process.env.NODE_ENV === "production" ? "Production" : "Development / Preview"
+    });
+  });
+
+  app.get("/api/system-status/logs", (req, res) => {
+    res.json(dbActivityLogs);
+  });
+
   // Firebase Firestore: Check status
   app.get("/api/firebase-status", async (req, res) => {
     const configured = isFirebaseConfigured();
     res.json({ configured, reachable: configured });
   });
 
-  // Fetch all worksheets (Firebase Firestore with Local Fallback)
+  // Fetch all worksheets (Supabase Primary with Fallback)
   app.get("/api/worksheets", async (req, res) => {
     const getLocalWorksheets = () => {
       const repo = readRepository();
@@ -1286,13 +1452,32 @@ async function startServer() {
       }));
     };
 
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getSupabaseService();
+        const { data, error } = await supabase.from("worksheets").select("*").order("created_at", { ascending: false });
+        if (!error && data) {
+          recordDbActivity("SELECT", "public.worksheets", "Supabase", true, undefined, `Fetched ${data.length} worksheets`);
+          if (data.length > 0) {
+            return res.json(data);
+          }
+        } else if (error) {
+          recordDbActivity("SELECT", "public.worksheets", "Supabase", false, error.message);
+        }
+      } catch (e: any) {
+        recordDbActivity("SELECT", "public.worksheets", "Supabase", false, e.message);
+      }
+    }
+
     try {
       if (isFirebaseConfigured()) {
         const firestoreData = await getFirebaseWorksheets();
         if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+          recordDbActivity("SELECT", "worksheets", "Firestore", true, undefined, `Fetched ${firestoreData.length} worksheets`);
           return res.json(firestoreData);
         }
       }
+      recordDbActivity("SELECT", "local_repository.json", "Local JSON", true, undefined, "Fetched local worksheets");
       return res.json(getLocalWorksheets());
     } catch (error: any) {
       console.warn("Firebase fetch worksheets error, using local fallback:", error);
@@ -1328,16 +1513,46 @@ async function startServer() {
       }
       writeRepository(repo);
 
+      // Sync to Supabase Primary
+      if (isSupabaseConfigured()) {
+        try {
+          const supabase = getSupabaseService();
+          const { error: supaErr } = await supabase.from("worksheets").upsert({
+            id,
+            created_at: createdAt || new Date().toISOString(),
+            grade,
+            topic,
+            exercise_style: exerciseStyle,
+            data: worksheetData
+          }, { onConflict: "id" });
+
+          if (!supaErr) {
+            recordDbActivity("UPSERT", "public.worksheets", "Supabase", true, undefined, `Saved worksheet ${id}`);
+          } else {
+            recordDbActivity("UPSERT", "public.worksheets", "Supabase", false, supaErr.message);
+          }
+        } catch (supaErr: any) {
+          recordDbActivity("UPSERT", "public.worksheets", "Supabase", false, supaErr.message);
+        }
+      }
+
       // Also sync to Firebase if configured
       if (isFirebaseConfigured()) {
-        await saveFirebaseWorksheet({
-          id,
-          created_at: createdAt || new Date().toISOString(),
-          grade,
-          topic,
-          exercise_style: exerciseStyle,
-          data: worksheetData
-        });
+        try {
+          await saveFirebaseWorksheet({
+            id,
+            created_at: createdAt || new Date().toISOString(),
+            grade,
+            topic,
+            exercise_style: exerciseStyle,
+            data: worksheetData
+          });
+          recordDbActivity("UPSERT", "worksheets", "Firestore", true, undefined, `Saved worksheet ${id}`);
+        } catch (fbErr: any) {
+          recordDbActivity("UPSERT", "worksheets", "Firestore", false, fbErr.message);
+        }
+      } else {
+        recordDbActivity("UPSERT", "local_repository.json", "Local JSON", true, undefined, `Saved worksheet ${id}`);
       }
 
       return res.json({
@@ -1503,21 +1718,27 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
 
       // We will map questions to question_bank columns:
       // grade, topic, format, question_text, options, correct_answer, explanation, matching_left, matching_right
-      const rows = questions.map(q => ({
+      const rows = questions.map((q: any, idx: number) => ({
+        id: q.id || `qb_${Date.now()}_${idx}_${Math.random().toString(36).substr(2, 5)}`,
+        app_id: "englishboxx",
+        subject: "English",
         grade: q.detected_level || q.grade || "ป.3",
+        cefr_level: q.cefr_level || "A1",
         topic: topic || q.topic || "บทเรียน AI ประยุกต์",
-        format: format || q.format || "multiple-choice",
+        question_type: format || q.format || q.question_type || "multiple-choice",
+        difficulty: q.difficulty || "Medium",
         question_text: q.question_text || q.questionText || "",
         options: q.options || [],
         correct_answer: q.correct_answer || q.correctAnswer || "",
         explanation: q.explanation || q.data_source_note || "",
-        matching_left: "",
-        matching_right: ""
+        status: q.status || "pending",
+        created_at: new Date().toISOString(),
+        created_by: adminEmail || "admin"
       }));
 
       const { data, error } = await supabase
         .from("question_bank")
-        .insert(rows)
+        .upsert(rows, { onConflict: "id" })
         .select();
 
       if (error) throw error;
@@ -1613,68 +1834,56 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
     }
   });
 
-  // API Route: Get all Question Bank entries (Firebase Firestore or Local Fallback - Deduplicated)
+  // API Route: Get all Question Bank entries (Supabase Primary with Local Read Fallback)
   app.get(["/api/question-bank", "/api/admin/question-bank"], async (req, res) => {
     try {
-      let bank = readQuestionBank();
-      if (isFirebaseConfigured()) {
+      let bank: any[] = [];
+      if (isSupabaseConfigured()) {
         try {
-          const fbBank = await getFirebaseQuestionBank();
-          if (fbBank && Array.isArray(fbBank) && fbBank.length > 0) {
-            bank = fbBank.map((d: any) => ({
-              id: d.id?.toString() || "qb-" + Math.random().toString(36).substr(2, 9),
-              subject: d.subject || "English",
-              grade: d.grade || "ป.3",
-              cefr_level: d.cefr_level || d.cefrLevel || "A1",
-              topic: d.topic || "General English",
-              grammar_focus: d.grammar_focus || d.grammarFocus || "",
-              vocabulary_focus: d.vocabulary_focus || d.vocabularyFocus || "",
-              question_type: d.format || d.question_type || d.questionType || "multiple-choice",
-              difficulty: d.difficulty || "Medium",
-              learning_objective: d.learning_objective || d.learningObjective || "",
-              source_id: d.source_id || d.sourceId || "",
-              source_category: d.source_category || d.sourceCategory || "",
-              ai_generated: d.ai_generated || d.aiGenerated || "Yes",
-              generation_method: d.generation_method || d.generationMethod || "AI Engine",
-              questionText: d.question_text || d.questionText || d.question_text || "",
-              question_text: d.question_text || d.questionText || "",
-              options: d.options || [],
-              correctAnswer: d.correct_answer || d.correctAnswer || "",
-              correct_answer: d.correct_answer || d.correctAnswer || "",
-              explanation: d.explanation || "",
-              status: d.status || "approved",
-              reviewed_at: d.reviewed_at || "",
-              reviewed_by: d.reviewed_by || "",
-              reject_reason: d.reject_reason || "",
-              tags: d.tags || [],
-              createdAt: d.created_at || d.createdAt || new Date().toISOString(),
-              createdBy: d.created_by || d.createdBy || "sakarinmam999@gmail.com",
-              created_at: d.created_at || d.createdAt || new Date().toISOString(),
-              created_by: d.created_by || d.createdBy || "sakarinmam999@gmail.com"
-            }));
+          const supabase = getSupabaseService();
+          const { data, error } = await supabase
+            .from("question_bank")
+            .select("*")
+            .eq("app_id", "englishboxx")
+            .order("created_at", { ascending: false });
+
+          if (!error && data) {
+            bank = data.map(mapSupabaseQuestionItem);
+          } else {
+            console.warn("Supabase read error in /api/question-bank, falling back to local:", error?.message);
           }
-        } catch (e) {
-          console.error("Firebase question_bank read error, using local fallback:", e);
+        } catch (err: any) {
+          console.warn("Supabase exception in /api/question-bank, falling back to local:", err?.message);
         }
       }
 
-      const deduplicated = deduplicateQuestionBank(bank).map(q => ({
-        ...q,
-        status: q.status || "approved"
-      }));
+      if (bank.length === 0) {
+        let localItems = readQuestionBank();
+        if (isFirebaseConfigured()) {
+          try {
+            const fbBank = await getFirebaseQuestionBank();
+            if (fbBank && Array.isArray(fbBank) && fbBank.length > 0) {
+              localItems = fbBank;
+            }
+          } catch (e) {
+            console.error("Firebase question_bank read fallback error:", e);
+          }
+        }
+        bank = deduplicateQuestionBank(localItems).map(mapSupabaseQuestionItem);
+      }
 
       const filterStatus = req.query.status as string;
       if (filterStatus && ["pending", "approved", "rejected"].includes(filterStatus)) {
-        res.json(deduplicated.filter(q => q.status === filterStatus));
+        res.json(bank.filter(q => q.status === filterStatus));
       } else {
-        res.json(deduplicated);
+        res.json(bank);
       }
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // API Route: Batch Review Questions (Approve or Reject multiple)
+  // API Route: Batch Review Questions (Approve or Reject multiple via Supabase)
   app.post(["/api/question-bank/batch-review", "/api/admin/question-bank/batch-review"], async (req, res) => {
     try {
       const { ids, status, reject_reason, reviewed_by } = req.body;
@@ -1682,39 +1891,51 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
         return res.status(400).json({ error: "Missing ids array or status" });
       }
 
-      let bank = readQuestionBank();
       const now = new Date().toISOString();
+      const updateData = {
+        status,
+        reviewed_at: now,
+        reviewed_by: reviewed_by || "admin",
+        reject_reason: status === "rejected" ? (reject_reason || "ไม่ได้ระบุเหตุผล") : ""
+      };
+
+      if (isSupabaseConfigured()) {
+        const supabase = getSupabaseService();
+        const { data, error } = await supabase
+          .from("question_bank")
+          .update(updateData)
+          .in("id", ids)
+          .eq("app_id", "englishboxx")
+          .select();
+
+        if (!error && data) {
+          return res.json({ success: true, count: data.length, items: data.map(mapSupabaseQuestionItem) });
+        } else {
+          console.warn("Supabase batch review update failed:", error?.message);
+        }
+      }
+
+      // Local fallback
+      let bank = readQuestionBank();
       const idSet = new Set(ids.map(String));
       const updatedItems: any[] = [];
-
       bank = bank.map(item => {
         if (idSet.has(String(item.id))) {
-          const updated = {
-            ...item,
-            status,
-            reviewed_at: now,
-            reviewed_by: reviewed_by || "admin",
-            reject_reason: status === "rejected" ? (reject_reason || "ไม่ได้ระบุเหตุผล") : ""
-          };
+          const updated = { ...item, ...updateData };
           updatedItems.push(updated);
           return updated;
         }
         return item;
       });
-
       writeQuestionBank(bank);
 
-      if (isFirebaseConfigured() && updatedItems.length > 0) {
-        await saveMultipleFirebaseQuestionBankItems(updatedItems);
-      }
-
-      res.json({ success: true, count: updatedItems.length, items: updatedItems });
+      res.json({ success: true, count: updatedItems.length, items: updatedItems.map(mapSupabaseQuestionItem) });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // API Route: Batch save Question Bank entries (With Duplicate Filtering)
+  // API Route: Batch save Question Bank entries (Supabase Primary with Duplicate Check)
   app.post(["/api/question-bank/batch", "/api/admin/question-bank/batch"], async (req, res) => {
     try {
       const { items } = req.body;
@@ -1722,75 +1943,126 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
         return res.status(400).json({ error: "Missing or invalid 'items' array" });
       }
 
-      let bank = readQuestionBank();
-      const savedEntries: any[] = [];
-      let skippedDuplicates = 0;
-
-      for (const item of items) {
-        if (!item.question_text && !item.questionText) continue;
+      const formattedEntries = items.map((item: any) => {
         const id = item.id || "qb_" + Date.now() + "_" + Math.random().toString(36).substr(2, 6);
-        const isExisting = bank.some(b => String(b.id) === String(id));
-
-        const entry = {
+        return {
           id,
+          app_id: "englishboxx",
           subject: item.subject || "English",
           grade: item.grade || "ป.3",
           cefr_level: item.cefr_level || item.cefrLevel || "A1",
           topic: item.topic || "General English",
-          grammar_focus: item.grammar_focus || item.grammarFocus || "",
+          grammar_focus: item.grammar_focus || item.grammarFocus || item.skill || "",
           vocabulary_focus: item.vocabulary_focus || item.vocabularyFocus || "",
+          learning_stage: item.learning_stage || item.learningStage || "",
+          focus: item.focus || item.skill || "",
           question_type: item.question_type || item.questionType || item.format || "multiple-choice",
           difficulty: item.difficulty || "Medium",
-          learning_objective: item.learning_objective || "",
+          learning_objective: item.learning_objective || item.learningObjective || "",
           source_id: item.source_id || "",
           source_category: item.source_category || "",
           ai_generated: item.ai_generated || "Yes",
-          generation_method: item.generation_method || "Exam Generator",
+          generation_method: item.generation_method || "AI Engine",
           question_text: item.question_text || item.questionText || "",
-          options: item.options || [],
+          options: Array.isArray(item.options) ? item.options : [],
           correct_answer: item.correct_answer || item.correctAnswer || "",
           explanation: item.explanation || "",
-          status: item.status || "approved",
+          status: item.status || "pending",
+          requires_image: Boolean(item.requires_image || item.requiresImage),
+          image_url: item.image_url || item.imageUrl || "",
           reviewed_at: item.reviewed_at || (item.status === "approved" || item.status === "rejected" ? new Date().toISOString() : ""),
           reviewed_by: item.reviewed_by || (item.status === "approved" || item.status === "rejected" ? "admin" : ""),
           reject_reason: item.reject_reason || "",
-          tags: item.tags || [item.grade, item.topic].filter(Boolean),
+          tags: Array.isArray(item.tags) ? item.tags : [item.grade, item.topic].filter(Boolean),
           created_at: item.created_at || new Date().toISOString(),
-          created_by: item.created_by || "admin"
+          created_by: item.created_by || item.createdBy || "admin"
         };
+      });
 
-        // Skip if duplicate and not editing existing record
-        if (!isExisting) {
-          const dupCheck = isDuplicateQuestion(entry, [...bank, ...savedEntries]);
-          if (dupCheck.isDuplicate) {
-            skippedDuplicates++;
-            continue;
+      if (isSupabaseConfigured()) {
+        const supabase = getSupabaseService();
+        const { data: existingData } = await supabase
+          .from("question_bank")
+          .select("*")
+          .eq("app_id", "englishboxx");
+
+        const existingBank = existingData || [];
+        const savedEntries: any[] = [];
+        let skippedDuplicates = 0;
+
+        for (const entry of formattedEntries) {
+          const isExisting = existingBank.some((b: any) => String(b.id) === String(entry.id));
+          if (!isExisting) {
+            const dupCheck = isDuplicateQuestion(entry, [...existingBank, ...savedEntries]);
+            if (dupCheck.isDuplicate) {
+              skippedDuplicates++;
+              continue;
+            }
+          }
+          savedEntries.push(entry);
+        }
+
+        if (savedEntries.length > 0) {
+          const { data, error } = await supabase
+            .from("question_bank")
+            .upsert(savedEntries, { onConflict: "id" })
+            .select();
+
+          if (error) {
+            console.error("Supabase batch upsert error:", error.message);
+            let bank = readQuestionBank();
+            for (const se of savedEntries) {
+              const idx = bank.findIndex(b => String(b.id) === String(se.id));
+              if (idx !== -1) bank[idx] = se;
+              else bank.push(se);
+            }
+            writeQuestionBank(bank);
+          } else if (data) {
+            return res.json({
+              success: true,
+              count: data.length,
+              skippedDuplicates,
+              items: data.map(mapSupabaseQuestionItem)
+            });
           }
         }
 
-        const existingIdx = bank.findIndex(b => String(b.id) === String(id));
-        if (existingIdx !== -1) {
-          bank[existingIdx] = { ...bank[existingIdx], ...entry };
-        } else {
-          bank.push(entry as any);
+        return res.json({
+          success: true,
+          count: savedEntries.length,
+          skippedDuplicates,
+          items: savedEntries.map(mapSupabaseQuestionItem)
+        });
+      } else {
+        // Local fallback
+        let bank = readQuestionBank();
+        const savedEntries: any[] = [];
+        let skippedDuplicates = 0;
+
+        for (const entry of formattedEntries) {
+          const isExisting = bank.some(b => String(b.id) === String(entry.id));
+          if (!isExisting) {
+            const dupCheck = isDuplicateQuestion(entry, [...bank, ...savedEntries]);
+            if (dupCheck.isDuplicate) {
+              skippedDuplicates++;
+              continue;
+            }
+          }
+          const existingIdx = bank.findIndex(b => String(b.id) === String(entry.id));
+          if (existingIdx !== -1) bank[existingIdx] = entry;
+          else bank.push(entry as any);
+          savedEntries.push(entry);
         }
-        savedEntries.push(entry);
+        writeQuestionBank(bank);
+
+        return res.json({ success: true, count: savedEntries.length, skippedDuplicates, items: savedEntries.map(mapSupabaseQuestionItem) });
       }
-
-      writeQuestionBank(bank);
-
-      // Save to Firebase Firestore
-      if (isFirebaseConfigured() && savedEntries.length > 0) {
-        await saveMultipleFirebaseQuestionBankItems(savedEntries);
-      }
-
-      res.json({ success: true, count: savedEntries.length, skippedDuplicates, items: savedEntries });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // API Route: Review single question (Approve or Reject without deletion)
+  // API Route: Review single question (Approve or Reject via Supabase)
   app.post(["/api/question-bank/:id/review", "/api/admin/question-bank/:id/review"], async (req, res) => {
     try {
       const { id } = req.params;
@@ -1799,34 +2071,45 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
         return res.status(400).json({ error: "Invalid status" });
       }
 
-      let bank = readQuestionBank();
-      const idx = bank.findIndex(b => String(b.id) === String(id));
-      if (idx === -1) {
-        return res.status(404).json({ error: "Question not found in bank" });
-      }
-
       const now = new Date().toISOString();
-      bank[idx] = {
-        ...bank[idx],
+      const updateData = {
         status,
         reviewed_at: now,
         reviewed_by: reviewed_by || "admin",
         reject_reason: status === "rejected" ? (reject_reason || "ไม่ได้ระบุเหตุผล") : ""
       };
 
-      writeQuestionBank(bank);
+      if (isSupabaseConfigured()) {
+        const supabase = getSupabaseService();
+        const { data, error } = await supabase
+          .from("question_bank")
+          .update(updateData)
+          .eq("id", id)
+          .eq("app_id", "englishboxx")
+          .select();
 
-      if (isFirebaseConfigured()) {
-        await saveFirebaseQuestionBankItem(bank[idx]);
+        if (!error && data && data.length > 0) {
+          return res.json({ success: true, item: mapSupabaseQuestionItem(data[0]) });
+        } else {
+          console.warn("Supabase review update failed:", error?.message);
+        }
       }
 
-      res.json({ success: true, item: bank[idx] });
+      // Local fallback
+      let bank = readQuestionBank();
+      const idx = bank.findIndex(b => String(b.id) === String(id));
+      if (idx !== -1) {
+        bank[idx] = { ...bank[idx], ...updateData };
+        writeQuestionBank(bank);
+        return res.json({ success: true, item: mapSupabaseQuestionItem(bank[idx]) });
+      }
+      return res.status(404).json({ error: "Question not found" });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // API Route: Create or update Question Bank entry (With Duplicate Check)
+  // API Route: Create or update Question Bank entry (Supabase Primary)
   app.post(["/api/question-bank", "/api/admin/question-bank"], async (req, res) => {
     try {
       const item = req.body;
@@ -1834,83 +2117,125 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
         return res.status(400).json({ error: "Missing question_text" });
       }
 
-      let bank = readQuestionBank();
       const id = item.id || "qb_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5);
-      const isExisting = bank.some(b => String(b.id) === String(id));
 
       const entry = {
         id,
+        app_id: "englishboxx",
         subject: item.subject || "English",
         grade: item.grade || "ป.3",
         cefr_level: item.cefr_level || item.cefrLevel || "A1",
         topic: item.topic || "General English",
-        grammar_focus: item.grammar_focus || item.grammarFocus || "",
+        grammar_focus: item.grammar_focus || item.grammarFocus || item.skill || "",
         vocabulary_focus: item.vocabulary_focus || item.vocabularyFocus || "",
-        question_type: item.question_type || item.format || "multiple-choice",
+        learning_stage: item.learning_stage || item.learningStage || "",
+        focus: item.focus || item.skill || "",
+        question_type: item.question_type || item.questionType || item.format || "multiple-choice",
         difficulty: item.difficulty || "Medium",
-        learning_objective: item.learning_objective || "",
+        learning_objective: item.learning_objective || item.learningObjective || "",
         source_id: item.source_id || "",
         source_category: item.source_category || "",
         ai_generated: item.ai_generated || "Yes",
         generation_method: item.generation_method || "AI Engine",
         question_text: item.question_text || item.questionText || "",
-        options: item.options || [],
+        options: Array.isArray(item.options) ? item.options : [],
         correct_answer: item.correct_answer || item.correctAnswer || "",
         explanation: item.explanation || "",
-        status: item.status || "approved",
+        status: item.status || "pending",
+        requires_image: Boolean(item.requires_image || item.requiresImage),
+        image_url: item.image_url || item.imageUrl || "",
         reviewed_at: item.reviewed_at || (item.status === "approved" || item.status === "rejected" ? new Date().toISOString() : ""),
         reviewed_by: item.reviewed_by || (item.status === "approved" || item.status === "rejected" ? "admin" : ""),
         reject_reason: item.reject_reason || "",
-        tags: item.tags || [],
+        tags: Array.isArray(item.tags) ? item.tags : [],
         created_at: item.created_at || new Date().toISOString(),
-        created_by: item.created_by || "sakarinmam999@gmail.com"
+        created_by: item.created_by || item.createdBy || "sakarinmam999@gmail.com"
       };
 
-      // Perform duplicate check if not updating existing record
-      if (!isExisting) {
-        const dupCheck = isDuplicateQuestion(entry, bank);
-        if (dupCheck.isDuplicate) {
-          return res.status(400).json({
-            error: `พบข้อสอบซ้ำในคลังข้อสอบ: ${dupCheck.matchedReason}`,
-            duplicate: true,
-            matchedItem: dupCheck.matchedItem
-          });
+      if (isSupabaseConfigured()) {
+        const supabase = getSupabaseService();
+
+        // Perform duplicate check on Supabase if creating new question
+        if (!item.id) {
+          const { data: existingData } = await supabase
+            .from("question_bank")
+            .select("*")
+            .eq("app_id", "englishboxx");
+
+          if (existingData) {
+            const dupCheck = isDuplicateQuestion(entry, existingData);
+            if (dupCheck.isDuplicate) {
+              return res.status(400).json({
+                error: `พบข้อสอบซ้ำในคลังข้อสอบ: ${dupCheck.matchedReason}`,
+                duplicate: true,
+                matchedItem: dupCheck.matchedItem
+              });
+            }
+          }
         }
-      }
 
-      // Save to local JSON
-      const existingIdx = bank.findIndex(b => String(b.id) === String(id));
-      if (existingIdx !== -1) {
-        bank[existingIdx] = { ...bank[existingIdx], ...entry };
+        const { data, error } = await supabase
+          .from("question_bank")
+          .upsert(entry, { onConflict: "id" })
+          .select();
+
+        if (error) {
+          console.error("Supabase upsert question error:", error.message);
+          let bank = readQuestionBank();
+          const existingIdx = bank.findIndex(b => String(b.id) === String(id));
+          if (existingIdx !== -1) bank[existingIdx] = { ...bank[existingIdx], ...entry };
+          else bank.push(entry as any);
+          writeQuestionBank(bank);
+          return res.json({ success: true, item: mapSupabaseQuestionItem(entry) });
+        }
+
+        const savedItem = data && data[0] ? mapSupabaseQuestionItem(data[0]) : mapSupabaseQuestionItem(entry);
+        return res.json({ success: true, item: savedItem });
       } else {
-        bank.push(entry as any);
-      }
-      writeQuestionBank(bank);
+        // Fallback local write
+        let bank = readQuestionBank();
+        const existingIdx = bank.findIndex(b => String(b.id) === String(id));
+        if (existingIdx !== -1) bank[existingIdx] = { ...bank[existingIdx], ...entry };
+        else bank.push(entry as any);
+        writeQuestionBank(bank);
 
-      // Save to Firebase Firestore
-      if (isFirebaseConfigured()) {
-        await saveFirebaseQuestionBankItem(entry);
+        return res.json({ success: true, item: mapSupabaseQuestionItem(entry) });
       }
-
-      res.json({ success: true, item: entry });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // API Route: Delete Question Bank entry
+  // API Route: Delete Question Bank entry (Supabase Primary)
   app.delete(["/api/question-bank/:id", "/api/admin/question-bank/:id"], async (req, res) => {
     try {
       const { id } = req.params;
-      let bank = readQuestionBank();
-      bank = bank.filter(b => String(b.id) !== String(id));
-      writeQuestionBank(bank);
 
-      if (isFirebaseConfigured()) {
-        await deleteFirebaseQuestionBankItem(id);
+      if (isSupabaseConfigured()) {
+        const supabase = getSupabaseService();
+        const { error } = await supabase
+          .from("question_bank")
+          .delete()
+          .eq("id", id)
+          .eq("app_id", "englishboxx");
+
+        if (!error) {
+          // Remove from local fallback if present
+          let bank = readQuestionBank();
+          const filtered = bank.filter(b => String(b.id) !== String(id));
+          if (filtered.length !== bank.length) writeQuestionBank(filtered);
+
+          return res.json({ success: true, deletedId: id });
+        } else {
+          console.warn("Supabase delete failed:", error.message);
+        }
       }
 
-      res.json({ success: true });
+      // Fallback
+      let bank = readQuestionBank();
+      const filtered = bank.filter(b => String(b.id) !== String(id));
+      writeQuestionBank(filtered);
+      res.json({ success: true, deletedId: id });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
@@ -2313,53 +2638,45 @@ CRITICAL: You MUST return EXACTLY ${numQuestions || 5} questions in the 'questio
         }
       }
 
-      // --- INDIVIDUAL QUESTION STORAGE IN QUESTION BANK (WITH DUPLICATE CHECK) ---
+      // --- INDIVIDUAL QUESTION STORAGE IN QUESTION BANK (SUPABASE PRIMARY) ---
       if (worksheetData.questions && Array.isArray(worksheetData.questions)) {
-        const bank = readQuestionBank();
-        const newBankEntries: QuestionBankEntry[] = [];
+        const newBankEntries = worksheetData.questions.map((q: any, idx: number) => ({
+          id: "qb_" + Date.now() + "_" + idx + "_" + Math.random().toString(36).substr(2, 5),
+          app_id: "englishboxx",
+          subject: "English",
+          grade: worksheetData.gradeLabel || "ป.3",
+          cefr_level: worksheetData.cefr || "A1",
+          topic: worksheetData.topic || "General English",
+          grammar_focus: worksheetData.grammarFocus || "",
+          vocabulary_focus: worksheetData.vocabularyTheme || "",
+          question_type: worksheetData.worksheetType || "multiple-choice",
+          difficulty: worksheetData.difficulty || "Medium",
+          learning_objective: worksheetData.learningObjective || "",
+          source_id: sourceMeta?.source_id || "",
+          source_category: sourceMeta?.source_category || "",
+          ai_generated: "Yes",
+          generation_method: worksheetData.generationMethod || "AI Engine",
+          question_text: q.questionText || q.question_text || "",
+          options: Array.isArray(q.options) ? q.options : [],
+          correct_answer: q.correctAnswer || q.correct_answer || "",
+          explanation: q.explanation || "",
+          status: "pending", // Default pending for new questions
+          tags: [worksheetData.topic, worksheetData.gradeLabel].filter(Boolean),
+          created_at: new Date().toISOString(),
+          created_by: adminEmail || "sakarinmam999@gmail.com"
+        }));
 
-        for (const q of worksheetData.questions) {
-          const entry: QuestionBankEntry = {
-            id: "qb_" + Math.random().toString(36).substr(2, 9),
-            subject: "English",
-            grade: worksheetData.gradeLabel || "ป.3",
-            cefr_level: worksheetData.cefr || "A1",
-            topic: worksheetData.topic || "General English",
-            grammar_focus: worksheetData.grammarFocus || "",
-            vocabulary_focus: worksheetData.vocabularyTheme || "",
-            question_type: worksheetData.worksheetType || "multiple-choice",
-            difficulty: worksheetData.difficulty || "Medium",
-            learning_objective: worksheetData.learningObjective || "",
-            source_id: sourceMeta?.source_id || "",
-            source_category: sourceMeta?.source_category || "",
-            ai_generated: "Yes",
-            generation_method: worksheetData.generationMethod || "AI Engine",
-            question_text: q.questionText || q.question_text || "",
-            options: q.options || [],
-            correct_answer: q.correctAnswer || q.correct_answer || "",
-            explanation: q.explanation || "",
-            tags: [worksheetData.topic, worksheetData.gradeLabel].filter(Boolean),
-            created_at: new Date().toISOString(),
-            created_by: adminEmail || "sakarinmam999@gmail.com"
-          };
-          
-          if (!isDuplicateQuestion(entry, [...bank, ...newBankEntries]).isDuplicate) {
-            bank.push(entry);
-            newBankEntries.push(entry);
-          }
-        }
-
-        if (newBankEntries.length > 0) {
-          writeQuestionBank(bank);
-        }
-
-        // Sync individual question bank entries to Firebase Firestore if configured
-        if (isFirebaseConfigured()) {
+        if (isSupabaseConfigured() && newBankEntries.length > 0) {
           try {
-            await saveMultipleFirebaseQuestionBankItems(newBankEntries);
-          } catch (dbErr) {
-            console.error("Failed to sync question bank entries to Firebase:", dbErr);
+            const supabase = getSupabaseService();
+            await supabase.from("question_bank").upsert(newBankEntries, { onConflict: "id" });
+          } catch (supaErr) {
+            console.error("Failed to sync new worksheet questions to Supabase question_bank:", supaErr);
           }
+        } else if (newBankEntries.length > 0) {
+          const bank = readQuestionBank();
+          bank.push(...newBankEntries as any);
+          writeQuestionBank(bank);
         }
       }
 
