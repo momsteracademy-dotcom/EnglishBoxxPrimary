@@ -1834,10 +1834,12 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
     }
   });
 
-  // API Route: Get all Question Bank entries (Supabase Primary with Local Read Fallback)
+  // API Route: Get all Question Bank entries (Supabase Primary with Local Read Fallback on Connection Error Only)
   app.get(["/api/question-bank", "/api/admin/question-bank"], async (req, res) => {
     try {
       let bank: any[] = [];
+      let supabaseFetchedSuccess = false;
+
       if (isSupabaseConfigured()) {
         try {
           const supabase = getSupabaseService();
@@ -1849,6 +1851,7 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
 
           if (!error && data) {
             bank = data.map(mapSupabaseQuestionItem);
+            supabaseFetchedSuccess = true;
           } else {
             console.warn("Supabase read error in /api/question-bank, falling back to local:", error?.message);
           }
@@ -1857,7 +1860,7 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
         }
       }
 
-      if (bank.length === 0) {
+      if (!supabaseFetchedSuccess) {
         let localItems = readQuestionBank();
         if (isFirebaseConfigured()) {
           try {
