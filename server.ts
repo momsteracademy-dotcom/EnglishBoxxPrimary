@@ -1614,7 +1614,7 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
   });
 
   // API Route: Get all Question Bank entries (Firebase Firestore or Local Fallback - Deduplicated)
-  app.get("/api/admin/question-bank", async (req, res) => {
+  app.get(["/api/question-bank", "/api/admin/question-bank"], async (req, res) => {
     try {
       let bank = readQuestionBank();
       if (isFirebaseConfigured()) {
@@ -1642,6 +1642,10 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
               correctAnswer: d.correct_answer || d.correctAnswer || "",
               correct_answer: d.correct_answer || d.correctAnswer || "",
               explanation: d.explanation || "",
+              status: d.status || "approved",
+              reviewed_at: d.reviewed_at || "",
+              reviewed_by: d.reviewed_by || "",
+              reject_reason: d.reject_reason || "",
               tags: d.tags || [],
               createdAt: d.created_at || d.createdAt || new Date().toISOString(),
               createdBy: d.created_by || d.createdBy || "sakarinmam999@gmail.com",
@@ -1670,44 +1674,8 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
     }
   });
 
-  // API Route: Review single question (Approve or Reject without deletion)
-  app.post("/api/admin/question-bank/:id/review", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { status, reject_reason, reviewed_by } = req.body;
-      if (!status || !["approved", "rejected", "pending"].includes(status)) {
-        return res.status(400).json({ error: "Invalid status" });
-      }
-
-      let bank = readQuestionBank();
-      const idx = bank.findIndex(b => String(b.id) === String(id));
-      if (idx === -1) {
-        return res.status(404).json({ error: "Question not found in bank" });
-      }
-
-      const now = new Date().toISOString();
-      bank[idx] = {
-        ...bank[idx],
-        status,
-        reviewed_at: now,
-        reviewed_by: reviewed_by || "admin",
-        reject_reason: status === "rejected" ? (reject_reason || "ไม่ได้ระบุเหตุผล") : ""
-      };
-
-      writeQuestionBank(bank);
-
-      if (isFirebaseConfigured()) {
-        await saveFirebaseQuestionBankItem(bank[idx]);
-      }
-
-      res.json({ success: true, item: bank[idx] });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
   // API Route: Batch Review Questions (Approve or Reject multiple)
-  app.post("/api/admin/question-bank/batch-review", async (req, res) => {
+  app.post(["/api/question-bank/batch-review", "/api/admin/question-bank/batch-review"], async (req, res) => {
     try {
       const { ids, status, reject_reason, reviewed_by } = req.body;
       if (!Array.isArray(ids) || ids.length === 0 || !status) {
@@ -1746,80 +1714,8 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
     }
   });
 
-  // API Route: Create or update Question Bank entry (With Duplicate Check)
-  app.post("/api/admin/question-bank", async (req, res) => {
-    try {
-      const item = req.body;
-      if (!item.question_text && !item.questionText) {
-        return res.status(400).json({ error: "Missing question_text" });
-      }
-
-      let bank = readQuestionBank();
-      const id = item.id || "qb_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5);
-      const isExisting = bank.some(b => String(b.id) === String(id));
-
-      const entry = {
-        id,
-        subject: item.subject || "English",
-        grade: item.grade || "ป.3",
-        cefr_level: item.cefr_level || item.cefrLevel || "A1",
-        topic: item.topic || "General English",
-        grammar_focus: item.grammar_focus || item.grammarFocus || "",
-        vocabulary_focus: item.vocabulary_focus || item.vocabularyFocus || "",
-        question_type: item.question_type || item.format || "multiple-choice",
-        difficulty: item.difficulty || "Medium",
-        learning_objective: item.learning_objective || "",
-        source_id: item.source_id || "",
-        source_category: item.source_category || "",
-        ai_generated: item.ai_generated || "Yes",
-        generation_method: item.generation_method || "AI Engine",
-        question_text: item.question_text || item.questionText || "",
-        options: item.options || [],
-        correct_answer: item.correct_answer || item.correctAnswer || "",
-        explanation: item.explanation || "",
-        status: item.status || "approved",
-        reviewed_at: item.reviewed_at || (item.status === "approved" || item.status === "rejected" ? new Date().toISOString() : ""),
-        reviewed_by: item.reviewed_by || (item.status === "approved" || item.status === "rejected" ? "admin" : ""),
-        reject_reason: item.reject_reason || "",
-        tags: item.tags || [],
-        created_at: item.created_at || new Date().toISOString(),
-        created_by: item.created_by || "sakarinmam999@gmail.com"
-      };
-
-      // Perform duplicate check if not updating existing record
-      if (!isExisting) {
-        const dupCheck = isDuplicateQuestion(entry, bank);
-        if (dupCheck.isDuplicate) {
-          return res.status(400).json({
-            error: `พบข้อสอบซ้ำในคลังข้อสอบ: ${dupCheck.matchedReason}`,
-            duplicate: true,
-            matchedItem: dupCheck.matchedItem
-          });
-        }
-      }
-
-      // Save to local JSON
-      const existingIdx = bank.findIndex(b => String(b.id) === String(id));
-      if (existingIdx !== -1) {
-        bank[existingIdx] = { ...bank[existingIdx], ...entry };
-      } else {
-        bank.push(entry as any);
-      }
-      writeQuestionBank(bank);
-
-      // Save to Firebase Firestore
-      if (isFirebaseConfigured()) {
-        await saveFirebaseQuestionBankItem(entry);
-      }
-
-      res.json({ success: true, item: entry });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
   // API Route: Batch save Question Bank entries (With Duplicate Filtering)
-  app.post("/api/admin/question-bank/batch", async (req, res) => {
+  app.post(["/api/question-bank/batch", "/api/admin/question-bank/batch"], async (req, res) => {
     try {
       const { items } = req.body;
       if (!Array.isArray(items) || items.length === 0) {
@@ -1894,8 +1790,116 @@ Fill "data_source_note" with a detailed explanation in Thai (e.g. 'สร้า�
     }
   });
 
+  // API Route: Review single question (Approve or Reject without deletion)
+  app.post(["/api/question-bank/:id/review", "/api/admin/question-bank/:id/review"], async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, reject_reason, reviewed_by } = req.body;
+      if (!status || !["approved", "rejected", "pending"].includes(status)) {
+        return res.status(400).json({ error: "Invalid status" });
+      }
+
+      let bank = readQuestionBank();
+      const idx = bank.findIndex(b => String(b.id) === String(id));
+      if (idx === -1) {
+        return res.status(404).json({ error: "Question not found in bank" });
+      }
+
+      const now = new Date().toISOString();
+      bank[idx] = {
+        ...bank[idx],
+        status,
+        reviewed_at: now,
+        reviewed_by: reviewed_by || "admin",
+        reject_reason: status === "rejected" ? (reject_reason || "ไม่ได้ระบุเหตุผล") : ""
+      };
+
+      writeQuestionBank(bank);
+
+      if (isFirebaseConfigured()) {
+        await saveFirebaseQuestionBankItem(bank[idx]);
+      }
+
+      res.json({ success: true, item: bank[idx] });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // API Route: Create or update Question Bank entry (With Duplicate Check)
+  app.post(["/api/question-bank", "/api/admin/question-bank"], async (req, res) => {
+    try {
+      const item = req.body;
+      if (!item.question_text && !item.questionText) {
+        return res.status(400).json({ error: "Missing question_text" });
+      }
+
+      let bank = readQuestionBank();
+      const id = item.id || "qb_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5);
+      const isExisting = bank.some(b => String(b.id) === String(id));
+
+      const entry = {
+        id,
+        subject: item.subject || "English",
+        grade: item.grade || "ป.3",
+        cefr_level: item.cefr_level || item.cefrLevel || "A1",
+        topic: item.topic || "General English",
+        grammar_focus: item.grammar_focus || item.grammarFocus || "",
+        vocabulary_focus: item.vocabulary_focus || item.vocabularyFocus || "",
+        question_type: item.question_type || item.format || "multiple-choice",
+        difficulty: item.difficulty || "Medium",
+        learning_objective: item.learning_objective || "",
+        source_id: item.source_id || "",
+        source_category: item.source_category || "",
+        ai_generated: item.ai_generated || "Yes",
+        generation_method: item.generation_method || "AI Engine",
+        question_text: item.question_text || item.questionText || "",
+        options: item.options || [],
+        correct_answer: item.correct_answer || item.correctAnswer || "",
+        explanation: item.explanation || "",
+        status: item.status || "approved",
+        reviewed_at: item.reviewed_at || (item.status === "approved" || item.status === "rejected" ? new Date().toISOString() : ""),
+        reviewed_by: item.reviewed_by || (item.status === "approved" || item.status === "rejected" ? "admin" : ""),
+        reject_reason: item.reject_reason || "",
+        tags: item.tags || [],
+        created_at: item.created_at || new Date().toISOString(),
+        created_by: item.created_by || "sakarinmam999@gmail.com"
+      };
+
+      // Perform duplicate check if not updating existing record
+      if (!isExisting) {
+        const dupCheck = isDuplicateQuestion(entry, bank);
+        if (dupCheck.isDuplicate) {
+          return res.status(400).json({
+            error: `พบข้อสอบซ้ำในคลังข้อสอบ: ${dupCheck.matchedReason}`,
+            duplicate: true,
+            matchedItem: dupCheck.matchedItem
+          });
+        }
+      }
+
+      // Save to local JSON
+      const existingIdx = bank.findIndex(b => String(b.id) === String(id));
+      if (existingIdx !== -1) {
+        bank[existingIdx] = { ...bank[existingIdx], ...entry };
+      } else {
+        bank.push(entry as any);
+      }
+      writeQuestionBank(bank);
+
+      // Save to Firebase Firestore
+      if (isFirebaseConfigured()) {
+        await saveFirebaseQuestionBankItem(entry);
+      }
+
+      res.json({ success: true, item: entry });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // API Route: Delete Question Bank entry
-  app.delete("/api/admin/question-bank/:id", async (req, res) => {
+  app.delete(["/api/question-bank/:id", "/api/admin/question-bank/:id"], async (req, res) => {
     try {
       const { id } = req.params;
       let bank = readQuestionBank();
@@ -2642,6 +2646,11 @@ CRITICAL: You MUST return EXACTLY ${numQuestions || 5} questions in the 'questio
     }
   });
 
+
+  // 404 handler for API routes to prevent HTML SPA fallback on missing API endpoints
+  app.all("/api/*", (req, res) => {
+    res.status(404).json({ error: `API route not found: ${req.originalUrl}` });
+  });
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
