@@ -1,0 +1,93 @@
+[
+  {
+    "source_id": "src_suankularb",
+    "source_name": "Suankularb Entrance Exam",
+    "source_category": "Entrance Exam",
+    "publisher": "Suankularb Wittayalai",
+    "curriculum": "OBEC Thai Core Curriculum",
+    "examination_type": "Entrance Exam",
+    "publication_year": "2025",
+    "country": "Thailand",
+    "notes": "Predefined historical entrance exam guide",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  },
+  {
+    "source_id": "src_triamudom",
+    "source_name": "Triam Udom Entrance Exam",
+    "source_category": "Entrance Exam",
+    "publisher": "Triam Udom Suksa",
+    "curriculum": "OBEC Thai Core Curriculum",
+    "examination_type": "Entrance Exam",
+    "publication_year": "2025",
+    "country": "Thailand",
+    "notes": "Highly rigorous English grammar questions",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  },
+  {
+    "source_id": "src_cambridge",
+    "source_name": "Cambridge English",
+    "source_category": "English Proficiency Test",
+    "publisher": "Cambridge University Press",
+    "curriculum": "Cambridge Primary English Standards",
+    "examination_type": "Proficiency Exam",
+    "publication_year": "2024",
+    "country": "United Kingdom",
+    "notes": "A1-A2 CEFR level alignment",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  },
+  {
+    "source_id": "src_oxford",
+    "source_name": "Oxford Practice Test",
+    "source_category": "English Proficiency Test",
+    "publisher": "Oxford University Press",
+    "curriculum": "Common European Framework Standards",
+    "examination_type": "Practice Exam",
+    "publication_year": "2024",
+    "country": "United Kingdom",
+    "notes": "Structured A1 diagnostic test",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  },
+  {
+    "source_id": "src_ministry",
+    "source_name": "Ministry of Education",
+    "source_category": "Government Syllabus",
+    "publisher": "Ministry of Education Thailand",
+    "curriculum": "OBEC Thai Core Curriculum (พ.ศ. 2551)",
+    "examination_type": "Syllabus Standard",
+    "publication_year": "2008",
+    "country": "Thailand",
+    "notes": "Thai national syllabus specifications",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  },
+  {
+    "source_id": "src_thai_math_p1",
+    "source_name": "Thailand Mathematics Level 1 (ป.1) Unit 1",
+    "source_category": "Government Syllabus",
+    "publisher": "Ministry of Education Thailand",
+    "curriculum": "OBEC Thai Core Curriculum (Mathematics)",
+    "examination_type": "Curriculum Standard",
+    "publication_year": "2568",
+    "country": "Thailand",
+    "notes": "Mathematics Level 1 Unit 1 - Counting and Numbers",
+    "active": true,
+    "createdAt": "2026-07-12T11:00:00.000Z"
+  },
+  {
+    "source_id": "src_internal",
+    "source_name": "Internal Worksheet",
+    "source_category": "Other",
+    "publisher": "English Magic Team",
+    "curriculum": "OBEC Thai Core Curriculum",
+    "examination_type": "Classwork Worksheet",
+    "publication_year": "2026",
+    "country": "Thailand",
+    "notes": "Standard internal curriculum worksheets",
+    "active": true,
+    "createdAt": "2026-07-12T10:40:41.903Z"
+  }
+]

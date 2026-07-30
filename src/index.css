@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-friendly: "Fredoka", "Comic Neue", sans-serif;
+  --font-handwritten: "Comic Neue", cursive, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Pastel & Lively Educational Theme Colors */
+  --color-natural-bg: #FCFDFB;
+  --color-natural-header: #8EE4AF; /* Pastel Green #8EE4AF */
+  --color-natural-border: #8EE4AF;
+  --color-natural-dark: #253334; /* Soft dark charcoal/slate for maximum legibility */
+  --color-natural-primary: #379683; /* Accent dark green for readable links/buttons */
+  --color-natural-hover: #2E7D6F;
+  --color-natural-light-border: #E2F5E9;
+  --color-natural-muted: #5A7E64;
+  --color-magic-green: #8EE4AF;
+  --color-magic-peach: #FFB7B2;
+  --color-magic-yellow: #FFF1A7;
+  --color-magic-dark: #253334;
+}
+
+/* Custom print styles */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-family: "Comic Neue", "Fredoka", "Inter", sans-serif !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Hide interactive controls, sidebars, header, footer during printing */
+  .no-print, nav, header, footer, sidebar, button {
+    display: none !important;
+  }
+
+  /* Expand worksheet to occupy full paper width */
+  .print-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    color: #000000 !important;
+  }
+
+  /* Force print background colors/borders on some elements if needed */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Page break control for the Answer Key */
+  .print-page-break {
+    page-break-before: always !important;
+    margin-top: 20px !important;
+    border-top: 2px dashed #000 !important;
+    padding-top: 20px !important;
+  }
+}
+
+/* Base custom interactive scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

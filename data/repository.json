@@ -1,0 +1,1198 @@
+[
+  {
+    "id": "repo_seeded_p1_classroom_objects_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "Classroom Objects (สิ่งของในห้องเรียน)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Classroom Objects (สิ่งของในห้องเรียน)",
+      "gradeLabel": "ป.1",
+      "instructions": "Choose the correct answer for each question. (เลือกคำตอบที่ถูกต้องที่สุดสำหรับแต่ละข้อ)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "What is this? (นี่คืออะไร) ✏️",
+          "options": [
+            "It is a pencil.",
+            "It is a book.",
+            "It is a chair.",
+            "It is a desk."
+          ],
+          "correctAnswer": "It is a pencil.",
+          "explanation": "✏️ pencil แปลว่า ดินสอ ใช้สำหรับเขียนหนังสือ"
+        },
+        {
+          "id": 2,
+          "questionText": "What do you use to read? (คุณใช้สิ่งใดในการอ่านหนังสือ) 📖",
+          "options": [
+            "A ruler",
+            "A book",
+            "An eraser",
+            "A pen"
+          ],
+          "correctAnswer": "A book",
+          "explanation": "📖 book แปลว่า หนังสือ ใช้สำหรับอ่านและเรียนรู้"
+        },
+        {
+          "id": 3,
+          "questionText": "Where do you sit in the classroom? (คุณนั่งที่ไหนในห้องเรียน) 🪑",
+          "options": [
+            "On a chair",
+            "On a whiteboard",
+            "On a pencil case",
+            "On a ruler"
+          ],
+          "correctAnswer": "On a chair",
+          "explanation": "🪑 chair แปลว่า เก้าอี้ มีไว้สำหรับนั่งเรียน"
+        },
+        {
+          "id": 4,
+          "questionText": "What is used to erase pencil marks? (สิ่งใดใช้สำหรับลบรอยดินสอ) 🧽",
+          "options": [
+            "A book",
+            "A desk",
+            "An eraser",
+            "A pencil"
+          ],
+          "correctAnswer": "An eraser",
+          "explanation": "🧽 eraser แปลว่า ยางลบ ใช้สำหรับลบคำผิดจากดินสอ"
+        },
+        {
+          "id": 5,
+          "questionText": "What do we use to draw straight lines? (เราใช้สิ่งใดในการตีเส้นตรง) 📏",
+          "options": [
+            "A ruler",
+            "A pencil",
+            "A school bag",
+            "A desk"
+          ],
+          "correctAnswer": "A ruler",
+          "explanation": "📏 ruler แปลว่า ไม้บรรทัด ใช้สำหรับวัดความยาวและขีดเส้นตรง"
+        },
+        {
+          "id": 6,
+          "questionText": "What is this? (กระเป๋านักเรียนคือคำใด) 🎒",
+          "options": [
+            "It is a school bag.",
+            "It is a window.",
+            "It is a chair.",
+            "It is a pencil."
+          ],
+          "correctAnswer": "It is a school bag.",
+          "explanation": "🎒 school bag แปลว่า กระเป๋านักเรียน ใช้สำหรับใส่หนังสือและอุปกรณ์การเรียน"
+        },
+        {
+          "id": 7,
+          "questionText": "Where does the teacher write in the classroom? (คุณครูเขียนบนสิ่งใดในห้องเรียน) 📋",
+          "options": [
+            "On the desk",
+            "On the board",
+            "On the chair",
+            "On the window"
+          ],
+          "correctAnswer": "On the board",
+          "explanation": "📋 board หรือ whiteboard แปลว่า กระดานดำ/กระดานไวท์บอร์ด ใช้สำหรับเขียนสอนบทเรียน"
+        },
+        {
+          "id": 8,
+          "questionText": "What is this? (นี่คืออะไร) ✒️",
+          "options": [
+            "It is a pen.",
+            "It is a ruler.",
+            "It is a book.",
+            "It is an eraser."
+          ],
+          "correctAnswer": "It is a pen.",
+          "explanation": "✒️ pen แปลว่า ปากกา ใช้เขียนด้วยน้ำหมึก"
+        },
+        {
+          "id": 9,
+          "questionText": "Where do you put your books and write? (คุณวางหนังสือและเขียนหนังสือบนสิ่งใด) 🏫",
+          "options": [
+            "A chair",
+            "A desk",
+            "A window",
+            "A whiteboard"
+          ],
+          "correctAnswer": "A desk",
+          "explanation": "desk แปลว่า โต๊ะเรียน มีลิ้นชักสำหรับเก็บของและใช้นั่งทำงานเขียนหนังสือ"
+        },
+        {
+          "id": 10,
+          "questionText": "What do we use to cut paper? (เราใช้สิ่งใดในการตัดกระดาษ) ✂️",
+          "options": [
+            "Scissors",
+            "A ruler",
+            "A pencil",
+            "A book"
+          ],
+          "correctAnswer": "Scissors",
+          "explanation": "✂️ scissors แปลว่า กรรไกร ใช้สำหรับตัดกระดาษหรือวัสดุต่างๆ"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p1_my_family_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "My Family (ครอบครัว)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "My Family (ครอบครัว)",
+      "gradeLabel": "ป.1",
+      "instructions": "Choose the best answer for each question. (เลือกคำตอบที่ดีที่สุดสำหรับแต่ละข้อ)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "This is my _______. He is my father's father. (นี่คือคุณปู่/คุณตาของฉัน)",
+          "options": [
+            "grandfather",
+            "mother",
+            "sister",
+            "brother"
+          ],
+          "correctAnswer": "grandfather",
+          "explanation": "grandfather แปลว่า คุณปู่ หรือ คุณตา"
+        },
+        {
+          "id": 2,
+          "questionText": "She is my father's wife. She is my _______. (เธอเป็นภรรยาของพ่อ เธอคือ...ของฉัน)",
+          "options": [
+            "brother",
+            "mother",
+            "father",
+            "grandfather"
+          ],
+          "correctAnswer": "mother",
+          "explanation": "mother แปลว่า คุณแม่"
+        },
+        {
+          "id": 3,
+          "questionText": "Who is your father? (พ่อของคุณคือใคร) 👨",
+          "options": [
+            "He is a man.",
+            "She is my mother.",
+            "He is my dad.",
+            "They are my sisters."
+          ],
+          "correctAnswer": "He is my dad.",
+          "explanation": "dad เป็นคำเรียกสั้นๆ ของ father แปลว่า พ่อ"
+        },
+        {
+          "id": 4,
+          "questionText": "This is my _______. She is my parent's daughter. (เธอเป็นลูกสาวของพ่อแม่ เธอคือ...ของฉัน)",
+          "options": [
+            "brother",
+            "sister",
+            "father",
+            "grandfather"
+          ],
+          "correctAnswer": "sister",
+          "explanation": "sister แปลว่า พี่สาว หรือ น้องสาว"
+        },
+        {
+          "id": 5,
+          "questionText": "My mother's mother is my _______. (แม่ของแม่คือ...ของฉัน) 👵",
+          "options": [
+            "grandmother",
+            "father",
+            "brother",
+            "sister"
+          ],
+          "correctAnswer": "grandmother",
+          "explanation": "grandmother แปลว่า คุณย่า หรือ คุณยาย"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p1_colors_numbers_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "Colors & Numbers 1-10",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Colors & Numbers 1-10",
+      "gradeLabel": "ป.1",
+      "instructions": "Answer the following questions about colors and numbers. (ตอบคำถามเกี่ยวกับสีและตัวเลข)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "What color is a banana? (กล้วยมีสีอะไร) 🍌",
+          "options": [
+            "Red",
+            "Blue",
+            "Yellow",
+            "Green"
+          ],
+          "correctAnswer": "Yellow",
+          "explanation": "Yellow แปลว่า สีเหลือง กล้วยสุกส่วนใหญ่มีสีเหลือง"
+        },
+        {
+          "id": 2,
+          "questionText": "Count the apples: 🍎 🍎 🍎. How many apples? (มีแอปเปิ้ลกี่ผล)",
+          "options": [
+            "Two",
+            "Three",
+            "Four",
+            "Five"
+          ],
+          "correctAnswer": "Three",
+          "explanation": "Three แปลว่า สาม มีแอปเปิ้ลทั้งหมด 3 ผล"
+        },
+        {
+          "id": 3,
+          "questionText": "What is the color of the sky? (ท้องฟ้าวันสดใสมีสีอะไร) ☁️",
+          "options": [
+            "Black",
+            "White",
+            "Blue",
+            "Orange"
+          ],
+          "correctAnswer": "Blue",
+          "explanation": "Blue แปลว่า สีน้ำเงิน หรือ สีฟ้า"
+        },
+        {
+          "id": 4,
+          "questionText": "Which number comes after four (4)? (ตัวเลขใดมาหลังเลข 4)",
+          "options": [
+            "Three (3)",
+            "Five (5)",
+            "Six (6)",
+            "Seven (7)"
+          ],
+          "correctAnswer": "Five (5)",
+          "explanation": "Five (5) มาถัดจากเลข Four (4)"
+        },
+        {
+          "id": 5,
+          "questionText": "What color is an apple? (แอปเปิ้ลส่วนใหญ่มีสีอะไร) 🍎",
+          "options": [
+            "Red",
+            "Blue",
+            "Yellow",
+            "Pink"
+          ],
+          "correctAnswer": "Red",
+          "explanation": "Red แปลว่า สีแดง"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_mth_l1_u1_l1_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "Counting & Writing Numbers (การนับและเขียนจำนวน)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Counting & Writing Numbers (การนับและเขียนจำนวน)",
+      "gradeLabel": "ป.1 (Mathematics)",
+      "instructions": "Choose the correct answer for each question. (เลือกคำตอบที่ถูกต้องที่สุดสำหรับแต่ละข้อ)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "Count the apples: 🍎🍎🍎🍎🍎. What is this number in Thai numerals? (มีแอปเปิ้ลกี่ผล เขียนเป็นตัวเลขไทยได้ตัวเลือกใด)",
+          "options": [
+            "๕",
+            "๔",
+            "๖",
+            "๓"
+          ],
+          "correctAnswer": "๕",
+          "explanation": "มีแอปเปิ้ลทั้งหมด 5 ผล เขียนเป็นตัวเลขไทยได้ '๕'"
+        },
+        {
+          "id": 2,
+          "questionText": "What is the Hindu-Arabic numeral for the Thai numeral '๗'? (ตัวเลขไทย '๗' ตรงกับตัวเลขอารบิกในตัวเลือกใด)",
+          "options": [
+            "7",
+            "6",
+            "8",
+            "9"
+          ],
+          "correctAnswer": "7",
+          "explanation": "ตัวเลขไทย '๗' มีค่าเท่ากับตัวเลขฮินดูอารบิก '7'"
+        },
+        {
+          "id": 3,
+          "questionText": "In the number 48, which digit is in the tens place? (จากจำนวน 48 ตัวเลขใดอยู่ในหลักสิบ)",
+          "options": [
+            "4",
+            "8",
+            "40",
+            "80"
+          ],
+          "correctAnswer": "4",
+          "explanation": "48 ประกอบด้วย 4 ในหลักสิบ (มีค่า 40) และ 8 ในหลักหน่วย"
+        },
+        {
+          "id": 4,
+          "questionText": "What is the expanded form of 35? (เขียน 35 ในรูปกระจายได้อย่างไร)",
+          "options": [
+            "30 + 5",
+            "3 + 5",
+            "30 + 50",
+            "20 + 15"
+          ],
+          "correctAnswer": "30 + 5",
+          "explanation": "35 คือ 3 สิบ กับ 5 หน่วย เขียนในรูปกระจายได้เป็น 30 + 5"
+        },
+        {
+          "id": 5,
+          "questionText": "How do you write 'สิบเก้า' (nineteen) in numerals? (คำเขียน 'สิบเก้า' ตรงกับตัวเลขใด)",
+          "options": [
+            "19",
+            "91",
+            "109",
+            "9"
+          ],
+          "correctAnswer": "19",
+          "explanation": "สิบเก้า เขียนแทนด้วยตัวเลขอารบิกได้ '19' หรือตัวเลขไทย '๑๙'"
+        },
+        {
+          "id": 6,
+          "questionText": "2 tens and 3 ones is equal to what number? (2 สิบ กับ 3 หน่วย มีค่าเท่ากับจำนวนใด)",
+          "options": [
+            "23",
+            "32",
+            "5",
+            "203"
+          ],
+          "correctAnswer": "23",
+          "explanation": "2 สิบ (20) บวกกับ 3 หน่วย (3) ได้เท่ากับ 23"
+        },
+        {
+          "id": 7,
+          "questionText": "How do you write 'หนึ่งร้อย' (one hundred) in Thai numerals? (คำเขียน 'หนึ่งร้อย' เขียนเป็นตัวเลขไทยได้ตัวเลือกใด)",
+          "options": [
+            "๑๐๐",
+            "๑๐",
+            "๑๐๐๐",
+            "๑"
+          ],
+          "correctAnswer": "๑๐๐",
+          "explanation": "หนึ่งร้อย เขียนเป็นตัวเลขไทยได้ '๑๐๐'"
+        },
+        {
+          "id": 8,
+          "questionText": "What is 'ศูนย์' (zero) in Hindu-Arabic numeral? (คำเขียน 'ศูนย์' เขียนเป็นตัวเลขอารบิกได้ตัวเลือกใด)",
+          "options": [
+            "0",
+            "1",
+            "10",
+            "ศูนย์"
+          ],
+          "correctAnswer": "0",
+          "explanation": "ศูนย์ (zero) เขียนแทนด้วยสัญลักษณ์ตัวเลขอารบิกคือ '0'"
+        },
+        {
+          "id": 9,
+          "questionText": "How many tens are in the number 90? (จำนวน 90 มีกี่สิบ)",
+          "options": [
+            "9 tens",
+            "90 tens",
+            "0 tens",
+            "1 ten"
+          ],
+          "correctAnswer": "9 tens",
+          "explanation": "90 คือ 9 สิบ กับ 0 หน่วย ดังนั้นจึงมีค่าเท่ากับ 9 สิบ (9 tens)"
+        },
+        {
+          "id": 10,
+          "questionText": "10, 20, 30, __, 50. What is the missing number? (จงเติมตัวเลขที่หายไปในช่องว่าง)",
+          "options": [
+            "40",
+            "35",
+            "45",
+            "60"
+          ],
+          "correctAnswer": "40",
+          "explanation": "เป็นการนับเพิ่มทีละ 10 ดังนั้น ถัดจาก 30 จึงเป็น 40"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_mth_l1_u1_l2_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "Comparing Numbers (การเปรียบเทียบจำนวน)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Comparing Numbers (การเปรียบเทียบจำนวน)",
+      "gradeLabel": "ป.1 (Mathematics)",
+      "instructions": "Compare the numbers and choose the correct option. (เปรียบเทียบจำนวนแล้วเลือกคำตอบที่ถูกต้องที่สุด)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "15 ___ 25. Which symbol is correct? (เติมเครื่องหมายใดลงในช่องว่าง)",
+          "options": [
+            "<",
+            ">",
+            "=",
+            "≠"
+          ],
+          "correctAnswer": "<",
+          "explanation": "15 มีค่าน้อยกว่า 25 จึงเติมเครื่องหมายน้อยกว่า (<)"
+        },
+        {
+          "id": 2,
+          "questionText": "42 ___ 42. Which symbol is correct? (เติมเครื่องหมายใดลงในช่องว่าง)",
+          "options": [
+            "=",
+            "<",
+            ">",
+            "≠"
+          ],
+          "correctAnswer": "=",
+          "explanation": "42 มีค่าเท่ากับ 42 จึงเติมเครื่องหมายเท่ากับ (=)"
+        },
+        {
+          "id": 3,
+          "questionText": "87 ___ 78. Which symbol is correct? (เติมเครื่องหมายใดลงในช่องว่าง)",
+          "options": [
+            ">",
+            "<",
+            "=",
+            "≠"
+          ],
+          "correctAnswer": ">",
+          "explanation": "87 มีค่ามากกว่า 78 จึงเติมเครื่องหมายมากกว่า (>)"
+        },
+        {
+          "id": 4,
+          "questionText": "Which statement is correct? (ประโยคสัญลักษณ์ในตัวเลือกใดถูกต้อง)",
+          "options": [
+            "36 > 29",
+            "12 = 21",
+            "50 < 40",
+            "88 < 78"
+          ],
+          "correctAnswer": "36 > 29",
+          "explanation": "36 มีค่ามากกว่า 29 ถูกต้อง ส่วนข้ออื่น ๆ ไม่ถูกต้อง"
+        },
+        {
+          "id": 5,
+          "questionText": "Which number is greater than 63? (จำนวนใดที่มีค่ามากกว่า 63)",
+          "options": [
+            "70",
+            "59",
+            "63",
+            "48"
+          ],
+          "correctAnswer": "70",
+          "explanation": "70 มีค่ามากกว่า 63 ส่วนจำนวนอื่นมีค่าน้อยกว่าหรือเท่ากับ 63"
+        },
+        {
+          "id": 6,
+          "questionText": "Which number is less than 12? (จำนวนใดที่มีค่าน้อยกว่า 12)",
+          "options": [
+            "8",
+            "12",
+            "15",
+            "20"
+          ],
+          "correctAnswer": "8",
+          "explanation": "8 มีค่าน้อยกว่า 12 ส่วนจำนวนอื่นมีค่ามากกว่าหรือเท่ากับ 12"
+        },
+        {
+          "id": 7,
+          "questionText": "Which number is NOT equal to 50? (จำนวนใดที่ไม่เท่ากับ 50)",
+          "options": [
+            "55",
+            "50",
+            "๕๐",
+            "50 + 0"
+          ],
+          "correctAnswer": "55",
+          "explanation": "55 มีค่าไม่เท่ากับ 50 ส่วนจำนวนอื่น ๆ ล้วนมีค่าเท่ากับ 50"
+        },
+        {
+          "id": 8,
+          "questionText": "Compare: 30 + 5 ___ 40. Which symbol is correct? (เปรียบเทียบ 30 + 5 กับ 40)",
+          "options": [
+            "<",
+            ">",
+            "=",
+            "≠"
+          ],
+          "correctAnswer": "<",
+          "explanation": "30 + 5 มีค่าเท่ากับ 35 ซึ่งน้อยกว่า 40 จึงใช้เครื่องหมายน้อยกว่า (<)"
+        },
+        {
+          "id": 9,
+          "questionText": "Which symbol means 'not equal' (ไม่เท่ากับ)? (เครื่องหมายใดหมายถึงไม่เท่ากับ)",
+          "options": [
+            "≠",
+            "=",
+            ">",
+            "<"
+          ],
+          "correctAnswer": "≠",
+          "explanation": "เครื่องหมาย ≠ หมายถึง ไม่เท่ากับ (not equal)"
+        },
+        {
+          "id": 10,
+          "questionText": "If A = 72 and B = 27, then: (ถ้ากำหนดให้ A = 72 และ B = 27 ข้อใดถูกต้อง)",
+          "options": [
+            "A > B",
+            "A < B",
+            "A = B",
+            "A ≠ B but is less than B"
+          ],
+          "correctAnswer": "A > B",
+          "explanation": "72 มีค่ามากกว่า 27 ดังนั้น A จึงมากกว่า B (A > B)"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_mth_l1_u1_l3_mc",
+    "createdAt": "2026-07-12T04:00:00.000Z",
+    "grade": "ป.1",
+    "topic": "Ordering Numbers (การเรียงลำดับจำนวน)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Ordering Numbers (การเรียงลำดับจำนวน)",
+      "gradeLabel": "ป.1 (Mathematics)",
+      "instructions": "Arrange the numbers as asked and choose the correct answer. (เรียงลำดับจำนวนตามคำสั่งแล้วเลือกคำตอบที่ถูกต้องที่สุด)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "Order from least to greatest: 12, 5, 8. What is the correct order? (เรียงลำดับจากน้อยไปมาก: 12, 5, 8 ได้คำตอบในข้อใด)",
+          "options": [
+            "5, 8, 12",
+            "12, 8, 5",
+            "8, 5, 12",
+            "5, 12, 8"
+          ],
+          "correctAnswer": "5, 8, 12",
+          "explanation": "เรียงจากน้อยไปมาก: 5 น้อยที่สุด ตามด้วย 8 และ 12 มากที่สุด"
+        },
+        {
+          "id": 2,
+          "questionText": "Order from greatest to least: 45, 90, 60. What is the correct order? (เรียงลำดับจากมากไปน้อย: 45, 90, 60 ได้คำตอบในข้อใด)",
+          "options": [
+            "90, 60, 45",
+            "45, 60, 90",
+            "90, 45, 60",
+            "60, 90, 45"
+          ],
+          "correctAnswer": "90, 60, 45",
+          "explanation": "เรียงจากมากไปน้อย: 90 มากที่สุด ตามด้วย 60 และ 45 น้อยที่สุด"
+        },
+        {
+          "id": 3,
+          "questionText": "Find the missing number in the increasing order: 22, 23, __, 25. (จำนวนใดหายไปในการเรียงลำดับจากน้อยไปมาก)",
+          "options": [
+            "24",
+            "21",
+            "26",
+            "20"
+          ],
+          "correctAnswer": "24",
+          "explanation": "เรียงลำดับจากน้อยไปมากทีละ 1 ดังนั้นถัดจาก 23 คือ 24"
+        },
+        {
+          "id": 4,
+          "questionText": "Find the missing number in the decreasing order: 80, 70, __, 50. (จำนวนใดหายไปในการเรียงลำดับจากมากไปน้อย)",
+          "options": [
+            "60",
+            "75",
+            "65",
+            "40"
+          ],
+          "correctAnswer": "60",
+          "explanation": "เรียงลำดับลดลงทีละ 10 ดังนั้นจำนวนที่อยู่ระหว่าง 70 และ 50 คือ 60"
+        },
+        {
+          "id": 5,
+          "questionText": "Which set of numbers is in order from least to greatest? (กลุ่มจำนวนในข้อใดเรียงลำดับจากน้อยไปมากถูกต้อง)",
+          "options": [
+            "14, 28, 45",
+            "90, 50, 70",
+            "33, 44, 22",
+            "5, 10, 2"
+          ],
+          "correctAnswer": "14, 28, 45",
+          "explanation": "14 น้อยกว่า 28 และ 28 น้อยกว่า 45 เป็นการเรียงลำดับจากน้อยไปมากที่ถูกต้อง"
+        },
+        {
+          "id": 6,
+          "questionText": "Which set of numbers is in order from greatest to least? (กลุ่มจำนวนในข้อใดเรียงลำดับจากมากไปน้อยถูกต้อง)",
+          "options": [
+            "89, 54, 32",
+            "12, 34, 56",
+            "5, 15, 10",
+            "40, 20, 30"
+          ],
+          "correctAnswer": "89, 54, 32",
+          "explanation": "89 มากกว่า 54 และ 54 มากกว่า 32 เป็นการเรียงลำดับจากมากไปน้อยที่ถูกต้อง"
+        },
+        {
+          "id": 7,
+          "questionText": "Put in order from least to greatest: 10, 3, 15. (เรียงลำดับจากน้อยไปมาก: 10, 3, 15)",
+          "options": [
+            "3, 10, 15",
+            "15, 10, 3",
+            "3, 15, 10",
+            "10, 3, 15"
+          ],
+          "correctAnswer": "3, 10, 15",
+          "explanation": "3 มีค่าน้อยที่สุด ตามด้วย 10 และ 15 มากที่สุด"
+        },
+        {
+          "id": 8,
+          "questionText": "Put in order from greatest to least: 7, 19, 13. (เรียงลำดับจากมากไปน้อย: 7, 19, 13)",
+          "options": [
+            "19, 13, 7",
+            "7, 13, 19",
+            "19, 7, 13",
+            "13, 19, 7"
+          ],
+          "correctAnswer": "19, 13, 7",
+          "explanation": "19 มีค่ามากที่สุด ตามด้วย 13 และ 7 น้อยที่สุด"
+        },
+        {
+          "id": 9,
+          "questionText": "Find the missing number: 97, 98, __, 100. (เติมจำนวนในช่องว่างให้ถูกต้อง)",
+          "options": [
+            "99",
+            "96",
+            "95",
+            "101"
+          ],
+          "correctAnswer": "99",
+          "explanation": "จำนวนที่อยู่ระหว่าง 98 และ 100 คือ 99"
+        },
+        {
+          "id": 10,
+          "questionText": "Which list is correct for the numbers 20, 10, 30 from least to greatest? (เรียงลำดับจากน้อยไปมากของ 20, 10, 30 ได้อย่างไร)",
+          "options": [
+            "10, 20, 30",
+            "30, 20, 10",
+            "10, 30, 20",
+            "20, 10, 30"
+          ],
+          "correctAnswer": "10, 20, 30",
+          "explanation": "เรียงจากน้อยไปมาก: 10 แล้วเป็น 20 แล้วเป็น 30"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_1785191513180",
+    "createdAt": "2026-07-27T22:31:52.369Z",
+    "grade": "ป.1",
+    "topic": "My Happy Family & Home",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "sakarinmam999@gmail.com",
+    "data": {
+      "title": "My Happy Family & Home",
+      "questions": [
+        {
+          "id": 1,
+          "options": [
+            "Mother",
+            "Father",
+            "Brother"
+          ],
+          "explanation": "Mother แปลว่า แม่ (She refers to a female parent)",
+          "questionText": "This is my mother. She is kind. Who is she?",
+          "correctAnswer": "Mother"
+        },
+        {
+          "id": 2,
+          "options": [
+            "Cat",
+            "Bird",
+            "Dog"
+          ],
+          "explanation": "Dog แปลว่า สุนัข (Woof! คือเสียงสุนัขเห่า)",
+          "questionText": "I have a small dog. It says 'Woof!'. What pet do I have?",
+          "correctAnswer": "Dog"
+        },
+        {
+          "id": 3,
+          "options": [
+            "House",
+            "Car",
+            "Tree"
+          ],
+          "explanation": "House แปลว่า บ้าน (We live in a house)",
+          "questionText": "We live together in a warm ______.",
+          "correctAnswer": "House"
+        },
+        {
+          "id": 4,
+          "options": [
+            "Sister",
+            "Brother",
+            "Mother"
+          ],
+          "explanation": "Brother แปลว่า พี่ชายหรือน้องชาย (Male sibling)",
+          "questionText": "My ______ is 7 years old. He is my male sibling.",
+          "correctAnswer": "Brother"
+        },
+        {
+          "id": 5,
+          "options": [
+            "Kitchen",
+            "Classroom",
+            "Garden"
+          ],
+          "explanation": "Classroom แปลว่า ห้องเรียน (We write in the classroom)",
+          "questionText": "This is my pencil. I use it to write in the ______.",
+          "correctAnswer": "Classroom"
+        }
+      ],
+      "gradeLabel": "ป.1 (Grade 1)",
+      "instructions": "Look at the options and circle the correct word. (เลือกคำศัพท์ที่ถูกต้อง)"
+    }
+  },
+  {
+    "id": "repo_seeded_p2_food_and_drinks_mc",
+    "createdAt": "2026-07-27T22:57:24.875Z",
+    "grade": "ป.2",
+    "topic": "Food and Drinks (อาหารและเครื่องดื่ม)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Food and Drinks (อาหารและเครื่องดื่ม)",
+      "gradeLabel": "ป.2",
+      "instructions": "Choose the correct answer for each question. (เลือกคำตอบที่ถูกต้องที่สุดสำหรับแต่ละข้อ)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "What do you drink when you are thirsty? (คุณดื่มอะไรเมื่อรู้สึกกระหายน้ำ) 🥛",
+          "options": [
+            "Milk",
+            "Bread",
+            "Rice",
+            "Chicken"
+          ],
+          "correctAnswer": "Milk",
+          "explanation": "🥛 Milk แปลว่า นม เป็นเครื่องดื่มที่มีประโยชน์และดื่มแก้กระหายได้"
+        },
+        {
+          "id": 2,
+          "questionText": "Which one is a drink? (ข้อใดคือเครื่องดื่ม) 🧃",
+          "options": [
+            "Apple juice",
+            "Pizza",
+            "Noodles",
+            "Sandwich"
+          ],
+          "correctAnswer": "Apple juice",
+          "explanation": "🧃 Apple juice แปลว่า น้ำแอปเปิล เป็นเครื่องดื่ม"
+        },
+        {
+          "id": 3,
+          "questionText": "I like to eat _______ for breakfast. (ฉันชอบกิน... สำหรับอาหารเช้า) 🥪",
+          "options": [
+            "a sandwich",
+            "water",
+            "tea",
+            "soda"
+          ],
+          "correctAnswer": "a sandwich",
+          "explanation": "🥪 Sandwich เป็นอาหารที่นิยมรับประทานในมื้อเช้า"
+        },
+        {
+          "id": 4,
+          "questionText": "What do you drink in the morning? (คุณดื่มอะไรในตอนเช้า) 🥛",
+          "options": [
+            "Hot milk",
+            "Fried rice",
+            "Salad",
+            "Hamburger"
+          ],
+          "correctAnswer": "Hot milk",
+          "explanation": "Hot milk คือ นมร้อน เหมาะสำหรับดื่มมื้อเช้า"
+        },
+        {
+          "id": 5,
+          "questionText": "Which food is sweet? (อาหารชนิดใดมีรสหวาน) 🍦",
+          "options": [
+            "Ice cream",
+            "Soup",
+            "Fish",
+            "Rice"
+          ],
+          "correctAnswer": "Ice cream",
+          "explanation": "🍦 Ice cream (ไอศกรีม) มีรสหวาน"
+        },
+        {
+          "id": 6,
+          "questionText": "What is this food? 🍕",
+          "options": [
+            "Pizza",
+            "Water",
+            "Orange juice",
+            "Coffee"
+          ],
+          "correctAnswer": "Pizza",
+          "explanation": "🍕 Pizza แปลว่า พิซซ่า"
+        },
+        {
+          "id": 7,
+          "questionText": "Rabbits love to eat _______. (กระต่ายชอบกินอะไร) 🥕",
+          "options": [
+            "carrots",
+            "milk",
+            "tea",
+            "cake"
+          ],
+          "correctAnswer": "carrots",
+          "explanation": "🥕 carrots แปลว่า แครอท"
+        },
+        {
+          "id": 8,
+          "questionText": "Which one is healthy water to drink every day? (น้ำชนิดใดมีประโยชน์สูงสุดที่ควรดื่มทุกวัน) 💧",
+          "options": [
+            "Pure water",
+            "Cola",
+            "Candy",
+            "Ice cream"
+          ],
+          "correctAnswer": "Pure water",
+          "explanation": "💧 Pure water แปลว่า น้ำเปล่าบริสุทธิ์"
+        },
+        {
+          "id": 9,
+          "questionText": "We eat _______ with a spoon and fork. (เรารับประทานข้าวด้วยช้อนและส้อม) 🍚",
+          "options": [
+            "rice",
+            "water",
+            "juice",
+            "milk"
+          ],
+          "correctAnswer": "rice",
+          "explanation": "🍚 rice แปลว่า ข้าว"
+        },
+        {
+          "id": 10,
+          "questionText": "What do bees make? (ผึ้งผลิตอะไรที่มีรสหวาน) 🍯",
+          "options": [
+            "Honey",
+            "Lemonade",
+            "Fried chicken",
+            "Soup"
+          ],
+          "correctAnswer": "Honey",
+          "explanation": "🍯 Honey แปลว่า น้ำผึ้ง"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p2_food_and_drinks_fill",
+    "createdAt": "2026-07-27T22:57:00.790Z",
+    "grade": "ป.2",
+    "topic": "Food and Drinks (อาหารและเครื่องดื่ม)",
+    "exerciseStyle": "fill-in-blank",
+    "created_by": "admin",
+    "data": {
+      "title": "Food and Drinks (อาหารและเครื่องดื่ม)",
+      "gradeLabel": "ป.2",
+      "instructions": "Fill in the blank with the correct word. (เติมคำในช่องว่างให้ถูกต้อง)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "I am thirsty. I want to drink _____. (water / rice)",
+          "options": [
+            "water",
+            "rice"
+          ],
+          "correctAnswer": "water",
+          "explanation": "water แปลว่า น้ำ เหมาะสำหรับดื่มยามกระหายน้ำ"
+        },
+        {
+          "id": 2,
+          "questionText": "Monkey likes to eat _____. (banana / milk)",
+          "options": [
+            "banana",
+            "milk"
+          ],
+          "correctAnswer": "banana",
+          "explanation": "banana แปลว่า กล้วย"
+        },
+        {
+          "id": 3,
+          "questionText": "Cows give us fresh _____. (milk / pizza)",
+          "options": [
+            "milk",
+            "pizza"
+          ],
+          "correctAnswer": "milk",
+          "explanation": "milk แปลว่า นมวัวสด"
+        },
+        {
+          "id": 4,
+          "questionText": "My mom cooks delicious _____ for dinner. (fried rice / tea)",
+          "options": [
+            "fried rice",
+            "tea"
+          ],
+          "correctAnswer": "fried rice",
+          "explanation": "fried rice แปลว่า ข้าวผัด"
+        },
+        {
+          "id": 5,
+          "questionText": "Orange _____ is full of Vitamin C. (juice / cake)",
+          "options": [
+            "juice",
+            "cake"
+          ],
+          "correctAnswer": "juice",
+          "explanation": "juice แปลว่า น้ำผลไม้ (Orange juice = น้ำส้ม)"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p2_my_house_mc",
+    "createdAt": "2026-07-27T22:57:24.876Z",
+    "grade": "ป.2",
+    "topic": "My House (บ้านของฉัน)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "My House (บ้านของฉัน)",
+      "gradeLabel": "ป.2",
+      "instructions": "Choose the correct answer for each room or object in the house. (เลือกคำตอบที่ถูกต้องสำหรับห้องหรือสิ่งของในบ้าน)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "Where do you sleep? (คุณนอนหลับที่ห้องไหน) 🛏️",
+          "options": [
+            "In the bedroom",
+            "In the kitchen",
+            "In the bathroom",
+            "In the garden"
+          ],
+          "correctAnswer": "In the bedroom",
+          "explanation": "🛏️ bedroom คือ ห้องนอน"
+        },
+        {
+          "id": 2,
+          "questionText": "Where does mother cook food? (คุณแม่ทำอาหารที่ห้องไหน) 🍳",
+          "options": [
+            "In the kitchen",
+            "In the bedroom",
+            "In the living room",
+            "On the roof"
+          ],
+          "correctAnswer": "In the kitchen",
+          "explanation": "🍳 kitchen คือ ห้องครัว"
+        },
+        {
+          "id": 3,
+          "questionText": "Where do we watch television together? (เราดูทีวีร่วมกันในห้องไหน) 📺",
+          "options": [
+            "In the living room",
+            "In the bathroom",
+            "In the garage",
+            "On the stairs"
+          ],
+          "correctAnswer": "In the living room",
+          "explanation": "📺 living room คือ ห้องนั่งเล่น"
+        },
+        {
+          "id": 4,
+          "questionText": "Where do you wash your hands and take a shower? (คุณอาบน้ำและล้างมือที่ไหน) 🚿",
+          "options": [
+            "In the bathroom",
+            "In the dining room",
+            "In the bedroom",
+            "In the kitchen"
+          ],
+          "correctAnswer": "In the bathroom",
+          "explanation": "🚿 bathroom คือ ห้องน้ำ"
+        },
+        {
+          "id": 5,
+          "questionText": "Where do we eat dinner? (เรารับประทานอาหารเย็นที่ห้องไหน) 🍽️",
+          "options": [
+            "In the dining room",
+            "In the garage",
+            "In the garden",
+            "In the bathroom"
+          ],
+          "correctAnswer": "In the dining room",
+          "explanation": "🍽️ dining room คือ ห้องรับประทานอาหาร"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p2_body_parts_mc",
+    "createdAt": "2026-07-27T22:57:24.876Z",
+    "grade": "ป.2",
+    "topic": "Parts of the Body (ร่างกาย)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "Parts of the Body (ร่างกาย)",
+      "gradeLabel": "ป.2",
+      "instructions": "Choose the correct body part answer. (เลือกคำตอบส่วนต่างๆ ของร่างกายที่ถูกต้อง)",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "We see with our _______. (เรามองเห็นด้วย...) 👀",
+          "options": [
+            "eyes",
+            "ears",
+            "nose",
+            "legs"
+          ],
+          "correctAnswer": "eyes",
+          "explanation": "👀 eyes คือ ดวงตา"
+        },
+        {
+          "id": 2,
+          "questionText": "We listen to music with our _______. (เราฟังเพลงด้วย...) 👂",
+          "options": [
+            "ears",
+            "eyes",
+            "mouth",
+            "hands"
+          ],
+          "correctAnswer": "ears",
+          "explanation": "👂 ears คือ หู"
+        },
+        {
+          "id": 3,
+          "questionText": "We smell flowers with our _______. (เราดมกลิ่นดอกไม้ด้วย...) 👃",
+          "options": [
+            "nose",
+            "teeth",
+            "feet",
+            "arms"
+          ],
+          "correctAnswer": "nose",
+          "explanation": "👃 nose คือ จมูก"
+        },
+        {
+          "id": 4,
+          "questionText": "We walk and run with our _______. (เราเดินและวิ่งด้วย...) 🦵",
+          "options": [
+            "legs and feet",
+            "hands and fingers",
+            "eyes and ears",
+            "teeth and tongue"
+          ],
+          "correctAnswer": "legs and feet",
+          "explanation": "🦵 legs and feet คือ ขาและเท้า"
+        },
+        {
+          "id": 5,
+          "questionText": "We chew food with our _______. (เราเคี้ยวอาหารด้วย...) 🦷",
+          "options": [
+            "teeth",
+            "hair",
+            "shoulders",
+            "knees"
+          ],
+          "correctAnswer": "teeth",
+          "explanation": "🦷 teeth คือ ฟัน"
+        }
+      ]
+    }
+  },
+  {
+    "id": "repo_seeded_p3_weather_mc",
+    "createdAt": "2026-07-27T22:57:24.876Z",
+    "grade": "ป.3",
+    "topic": "The Weather (สภาพอากาศ)",
+    "exerciseStyle": "multiple-choice",
+    "created_by": "admin",
+    "data": {
+      "title": "The Weather (สภาพอากาศ)",
+      "gradeLabel": "ป.3",
+      "instructions": "Select the correct weather term for each situation.",
+      "passage": "",
+      "questions": [
+        {
+          "id": 1,
+          "questionText": "Take an umbrella! It is _______ today. 🌧️",
+          "options": [
+            "rainy",
+            "sunny",
+            "windy",
+            "snowy"
+          ],
+          "correctAnswer": "rainy",
+          "explanation": "🌧️ rainy หมายถึง ฝนตก ควรพกร่ม"
+        },
+        {
+          "id": 2,
+          "questionText": "Wear your sunglasses! The sun is shining. It is _______. ☀️",
+          "options": [
+            "sunny",
+            "cloudy",
+            "stormy",
+            "cold"
+          ],
+          "correctAnswer": "sunny",
+          "explanation": "☀️ sunny หมายถึง แดดจัด"
+        },
+        {
+          "id": 3,
+          "questionText": "Look at the kites flying high! It is very _______. 🪁",
+          "options": [
+            "windy",
+            "hot",
+            "foggy",
+            "rainy"
+          ],
+          "correctAnswer": "windy",
+          "explanation": "🪁 windy หมายถึง ลมแรง เหมาะกับการเล่นว่าว"
+        },
+        {
+          "id": 4,
+          "questionText": "Wear a thick jacket! It is very _______ outside. ❄️",
+          "options": [
+            "cold",
+            "hot",
+            "sunny",
+            "warm"
+          ],
+          "correctAnswer": "cold",
+          "explanation": "❄️ cold หมายถึง หนาวเย็น ควรใส่เสื้อแจ็กเก็ตหนาๆ"
+        },
+        {
+          "id": 5,
+          "questionText": "There are many dark clouds in the sky. It is _______. ☁️",
+          "options": [
+            "cloudy",
+            "sunny",
+            "clear",
+            "windy"
+          ],
+          "correctAnswer": "cloudy",
+          "explanation": "☁️ cloudy หมายถึง มีเมฆมาก"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "Worksheet": {
+      "title": "Worksheet",
+      "description": "A saved English worksheet document",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "grade": { "type": "string" },
+        "topic": { "type": "string" },
+        "exerciseStyle": { "type": "string" },
+        "created_by": { "type": "string" },
+        "plan_used": { "type": "string" },
+        "branding_enabled": { "type": "boolean" }
+      },
+      "required": ["id", "grade", "topic", "exerciseStyle"]
+    },
+    "Profile": {
+      "title": "Profile",
+      "description": "User profile with role, plan, plan_expiry, and generation quota tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "plan": { "type": "string" },
+        "plan_expiry": { "type": "string" },
+        "download_count": { "type": "number" },
+        "generation_count": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "email", "role"]
+    },
+    "TeacherProfile": {
+      "title": "TeacherProfile",
+      "description": "Teacher profile branding configuration",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "teacher_name": { "type": "string" },
+        "school_name": { "type": "string" },
+        "logo_url": { "type": "string" },
+        "watermark": { "type": "string" },
+        "logo_position": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid"]
+    },
+    "QuestionBankItem": {
+      "title": "QuestionBankItem",
+      "description": "Curated curriculum question item in question bank",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "grade": { "type": "string" },
+        "topic": { "type": "string" },
+        "format": { "type": "string" },
+        "question_text": { "type": "string" },
+        "correct_answer": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["grade", "topic", "format", "question_text", "correct_answer"]
+    }
+  },
+  "firestore": {
+    "/worksheets/{worksheetId}": {
+      "schema": { "$ref": "entities/Worksheet" },
+      "description": "Collection of generated and saved English worksheets"
+    },
+    "/profiles/{userId}": {
+      "schema": { "$ref": "entities/Profile" },
+      "description": "Collection of user profiles"
+    },
+    "/teacher_profiles/{userId}": {
+      "schema": { "$ref": "entities/TeacherProfile" },
+      "description": "Collection of teacher profile branding settings"
+    },
+    "/question_bank/{questionId}": {
+      "schema": { "$ref": "entities/QuestionBankItem" },
+      "description": "Collection of question bank items"
+    }
+  }
+}

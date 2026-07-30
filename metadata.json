@@ -1,0 +1,8 @@
+{
+  "name": "English Magic Primary",
+  "description": "AI-powered English worksheet generator for Thai Primary School teachers (ป.1 - ป.6) aligned with the national curriculum rules.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

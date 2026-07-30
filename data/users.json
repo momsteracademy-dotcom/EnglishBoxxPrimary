@@ -1,0 +1,23 @@
+[
+  {
+    "id": "admin-1",
+    "email": "sakarinmam999@gmail.com",
+    "password": "Akarach@9365",
+    "role": "admin",
+    "createdAt": "2026-07-27T22:15:21.822Z"
+  },
+  {
+    "id": "test-free",
+    "email": "testfree@gmail.com",
+    "password": "123456",
+    "role": "free",
+    "createdAt": "2026-07-27T22:15:21.822Z"
+  },
+  {
+    "id": "test-premium",
+    "email": "testpremium@gmail.com",
+    "password": "123456",
+    "role": "premium",
+    "createdAt": "2026-07-27T22:15:21.822Z"
+  }
+]
